@@ -90,7 +90,8 @@
         <main></main>
 
         <script type="text/javascript">
-        var delay = 1000;
+        "use strict";
+        var delay = 500;
          var feeds = [
             "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Newcastle-under-Lyme&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
             "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Staffordshire%20Moorlands&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
@@ -126,9 +127,9 @@
              var day1Value = document.createElement("h3");
              day1Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[1].newCasesBySpecimenDateRollingSum);
              if(day1Value.textContent.substr(0,1) === "+") {
-                 day1Value.clasList.add("positive");
+                 day1Value.classList.add("positive");
              } else if(day1Value.textContent.substr(0,1) === "-") {
-                 day1Value.clasList.add("negative");
+                 day1Value.classList.add("negative");
              }
              
              var day1Caption = document.createElement("figCaption");
@@ -141,9 +142,9 @@
              var day7Value = document.createElement("h3");
              day7Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[6].newCasesBySpecimenDateRollingSum);
              if(day7Value.textContent.substr(0,1) === "+") {
-                 day7Value.clasList.add("positive");
+                 day7Value.classList.add("positive");
              } else if(day7Value.textContent.substr(0,1) === "-") {
-                 day7Value.clasList.add("negative");
+                 day7Value.classList.add("negative");
              }
              
              var day7Caption = document.createElement("figCaption");
