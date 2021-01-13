@@ -33,6 +33,12 @@
                 padding: 0;
                 margin: 0;
             }
+            h3.positive {
+                color: #eb4747;
+            }
+            h3.negative {
+                color: #66cc66;
+            }
             figcaption {
                 font-size: 11px;
                 color: #666;
@@ -119,6 +125,11 @@
              var day1Change = document.createElement("figure");
              var day1Value = document.createElement("h3");
              day1Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[1].newCasesBySpecimenDateRollingSum);
+             if(day1Value.textContent.substr(0,1) === "+") {
+                 day1Value.clasList.add("positive");
+             } else if(day1Value.textContent.substr(0,1) === "-") {
+                 day1Value.clasList.add("negative");
+             }
              
              var day1Caption = document.createElement("figCaption");
              day1Caption.textContent = "from yesterday";
@@ -129,6 +140,11 @@
              var day7Change = document.createElement("figure");
              var day7Value = document.createElement("h3");
              day7Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[6].newCasesBySpecimenDateRollingSum);
+             if(day7Value.textContent.substr(0,1) === "+") {
+                 day7Value.clasList.add("positive");
+             } else if(day7Value.textContent.substr(0,1) === "-") {
+                 day7Value.clasList.add("negative");
+             }
              
              var day7Caption = document.createElement("figCaption");
              day7Caption.textContent = "from last week";
