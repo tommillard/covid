@@ -18,7 +18,7 @@
             }
             main {
                 width: 100%;
-                padding: 20px;
+                padding: 5vw
             }
             summary {
                 width: 100%;
@@ -29,7 +29,8 @@
                 display: inline-block;
                 padding: 0;
                 margin: 0;
-                margin-right: 20px;
+                padding-right: 20px;
+                width: 33%;
             }
             h3 {
                 font-size: 20px;
@@ -49,9 +50,15 @@
             }
             section {
                 display: inline-block;
-                width: 50%;
                 margin-bottom: 40px;
-                min-width: 350px;
+                max-width: 450px;
+                min-width: 300px;
+                margin-right: 20px;
+            }
+            hr {
+                border: 0;
+                border-bottom: 1px dotted #333;
+                margin-bottom: 20px;
             }
             h2 {
                 font-size: 20px;
@@ -62,14 +69,15 @@
                 margin: 0;
                 width: 100%;
                 margin-bottom: 10px;
-                width: 90%;
+                width: 100%;
                 border-bottom: 1px solid #333;
             }
-            article {
+            .rawData {
                 height: 100px;
+                width: 50%;
                 overflow-y: scroll;
             }
-            div {
+            .rawData_Entry {
                 display: flex;
                 flex-wrap: nowrap;
                 font-size: 0;
@@ -94,120 +102,161 @@
         <main></main>
 
         <script type="text/javascript">
-        "use strict";
-        var delay = 500;
-         var feeds = [
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Newcastle-under-Lyme&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Staffordshire%20Moorlands&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=South%20Staffordshire&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Bolton&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Warwick&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=ltla;areaName=Staffordshire&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=utla;areaName=Staffordshire;date%253E2020-10-13&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json",
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=areaType=nation;areaName=England&structure=%7B%22areaType%22:%22areaType%22,%22areaName%22:%22areaName%22,%22areaCode%22:%22areaCode%22,%22date%22:%22date%22,%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22,%22newCasesBySpecimenDateChange%22:%22newCasesBySpecimenDateChange%22,%22newCasesBySpecimenDateChangePercentage%22:%22newCasesBySpecimenDateChangePercentage%22%7D&format=json"
-        ];
 
-         feeds.forEach((feed, idx) => {
-            setTimeout(()=>{
-                fetch(feed)
-                    .then((response) => response.json())
-                    .then((json) => {
-                        addPanel(json.data);
-                    }).catch(function () {});
-            }, delay * idx);
-         });
-
-         function addPanel(data) {
-             console.log(data);
-             var wrapper = document.createElement("section");
-             var title = document.createElement("h2");
-             title.textContent = data[0].areaName;
-             wrapper.appendChild(title);
-             document.body.querySelector("main").appendChild(wrapper);
-
-             var summary = document.createElement("summary");
-
-             var day1Change = document.createElement("figure");
-             var day1Value = document.createElement("h3");
-             day1Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[1].newCasesBySpecimenDateRollingSum);
-             if(day1Value.textContent.substr(0,1) === "+") {
-                 day1Value.classList.add("positive");
-             } else if(day1Value.textContent.substr(0,1) === "-") {
-                 day1Value.classList.add("negative");
-             }
-             
-             var day1Caption = document.createElement("figCaption");
-             day1Caption.textContent = "from yesterday";
-             day1Change.appendChild(day1Value);
-             day1Change.appendChild(day1Caption);
-
-
-             var day7Change = document.createElement("figure");
-             var day7Value = document.createElement("h3");
-             day7Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[6].newCasesBySpecimenDateRollingSum);
-             if(day7Value.textContent.substr(0,1) === "+") {
-                 day7Value.classList.add("positive");
-             } else if(day7Value.textContent.substr(0,1) === "-") {
-                 day7Value.classList.add("negative");
-             }
-             
-             var day7Caption = document.createElement("figCaption");
-             day7Caption.textContent = "from last week";
-             day7Change.appendChild(day7Value);
-             day7Change.appendChild(day7Caption);
-
-
-             var rateChange = document.createElement("figure");
-             var rateValue = document.createElement("h3");
-             rateValue.textContent = data[0].newCasesBySpecimenDateRollingRate;
-             
-             var rateCaption = document.createElement("figCaption");
-             rateCaption.textContent = "cases per 100k";
-             rateChange.appendChild(rateValue);
-             rateChange.appendChild(rateCaption);
-
-             summary.appendChild(day1Change);
-             summary.appendChild(day7Change);
-             summary.appendChild(rateChange);
-
-             wrapper.appendChild(summary);
-
-             var dataWrapper = document.createElement("article");
-             wrapper.appendChild(dataWrapper);
+            "use strict";
             
-            console.log(data.length);
+            var delay = 500;
 
-            data.forEach((entry, idx) => {
-                 console.log('hey!');
-                 console.log(entry);
-                var entryWrapper = document.createElement("div");
+            var feedList = localStorage["covidFeeds"] || [
+                "Newcastle-under-Lyme",
+                "Staffordshire Moorlands",
+                "South Staffordshire",
+                "Bolton",
+                "Warwick",
+            ];
 
-                var date = document.createElement("time");
-                date.innerHTML = formatDate(entry.date);
-                entryWrapper.appendChild(date);
+            if(!Array.isArray(feedList)) {
+                feedList = [];
+            }
 
-                var value = document.createElement("b");
-                value.innerHTML = entry.newCasesBySpecimenDateRollingSum;
-                entryWrapper.appendChild(value);
+            
+            feedList.forEach((feed, idx) => {
+                var ltlaWrapper = document.createElement("section");
+                document.body.querySelector("main").appendChild(ltlaWrapper);
+                setTimeout(()=>{
+                    fetch(constructURL(feed))
+                        .then((response) => response.json())
+                        .then((json) => {
+                            addPanel(json.data, ltlaWrapper);
+                        }).catch(function () {});
+                }, delay * idx);
+            });
 
-                dataWrapper.appendChild(entryWrapper);
-             });
-         }
+            document.body.querySelector("main").appendChild(document.createElement("hr"));
+            var utlaWrapper = document.createElement("section");
+            document.body.querySelector("main").appendChild(utlaWrapper);
 
-         function generatePercentageChange(val1, val2) {
-             var percentageChange = ((val1 - val2) / val2) * 100;
-             var str = percentageChange.toFixed(1) + "%";
-             if(percentageChange > 0) {
-                 return "+" + str;
-             } else {
-                 return str;
-             }
-         }
+            fetch(constructURL("Staffordshire|utla"))
+                .then((response) => response.json())
+                .then((json) => {
+                    addPanel(json.data, utlaWrapper);
+                });
 
-         function formatDate (date) {
-             var splitDate = date.split("-");
-             return `${splitDate[2]}/${splitDate[1]}`;
-         }
+                var nationWrapper = document.createElement("section");
+            document.body.querySelector("main").appendChild(nationWrapper);
+
+            fetch(constructURL("England|nation"))
+                .then((response) => response.json())
+                .then((json) => {
+                    addPanel(json.data, nationWrapper);
+                });
+
+            function addPanel(data, wrapper) {
+                var title = document.createElement("h2");
+                title.textContent = data[0].areaName;
+                wrapper.appendChild(title);
+
+                var summary = document.createElement("summary");
+
+                var day1Change = document.createElement("figure");
+                var day1Value = document.createElement("h3");
+                day1Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[1].newCasesBySpecimenDateRollingSum);
+                if(day1Value.textContent.substr(0,1) === "+") {
+                    day1Value.classList.add("positive");
+                } else if(day1Value.textContent.substr(0,1) === "-") {
+                    day1Value.classList.add("negative");
+                }
+                
+                var day1Caption = document.createElement("figCaption");
+                day1Caption.textContent = "from yesterday";
+                day1Change.appendChild(day1Value);
+                day1Change.appendChild(day1Caption);
+
+
+                var day7Change = document.createElement("figure");
+                var day7Value = document.createElement("h3");
+                day7Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[6].newCasesBySpecimenDateRollingSum);
+                if(day7Value.textContent.substr(0,1) === "+") {
+                    day7Value.classList.add("positive");
+                } else if(day7Value.textContent.substr(0,1) === "-") {
+                    day7Value.classList.add("negative");
+                }
+                
+                var day7Caption = document.createElement("figCaption");
+                day7Caption.textContent = "from last week";
+                day7Change.appendChild(day7Value);
+                day7Change.appendChild(day7Caption);
+
+
+                var rateChange = document.createElement("figure");
+                var rateValue = document.createElement("h3");
+                rateValue.textContent = data[0].newCasesBySpecimenDateRollingRate;
+                
+                var rateCaption = document.createElement("figCaption");
+                rateCaption.textContent = "cases per 100k";
+                rateChange.appendChild(rateValue);
+                rateChange.appendChild(rateCaption);
+
+                summary.appendChild(day1Change);
+                summary.appendChild(day7Change);
+                summary.appendChild(rateChange);
+
+                wrapper.appendChild(summary);
+
+                var dataWrapper = document.createElement("div");
+                dataWrapper.classList.add("rawData");
+                wrapper.appendChild(dataWrapper);
+                
+                data.forEach((entry, idx) => {
+                    var entryWrapper = document.createElement("div");
+                    entryWrapper.classList.add("rawData_Entry")
+
+                    var date = document.createElement("time");
+                    date.innerHTML = formatDate(entry.date);
+                    entryWrapper.appendChild(date);
+
+                    var value = document.createElement("b");
+                    value.innerHTML = entry.newCasesBySpecimenDateRollingSum;
+                    entryWrapper.appendChild(value);
+
+                    dataWrapper.appendChild(entryWrapper);
+                });
+            }
+
+            function generatePercentageChange(val1, val2) {
+                var percentageChange = ((val1 - val2) / val2) * 100;
+                var str = percentageChange.toFixed(1) + "%";
+                if(percentageChange > 0) {
+                    return "+" + str;
+                } else {
+                    return str;
+                }
+            }
+
+            function formatDate (date) {
+                var splitDate = date.split("-");
+                return `${splitDate[2]}/${splitDate[1]}`;
+            }
+
+            function constructURL(areaName) {
+                var splitName = areaName.split("|");
+                var areaType = splitName[1] || "ltla";
+                
+                return "https://coronavirus.data.gov.uk/api/v1/data?filters="
+                    + "areaType="
+                    + areaType + ";"
+                    + "areaName="
+                    + encodeURI(splitName[0])
+                    + "&structure=%7B"
+                    + "%22areaType%22:%22areaType%22,"
+                    + "%22areaName%22:%22areaName%22,"
+                    + "%22date%22:%22date%22,"
+                    + "%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,"
+                    + "%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22" 
+                    + "%7D"
+                    + "&format=json";
+            }
+
         </script>
     </body>
 </html>
