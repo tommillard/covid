@@ -181,7 +181,7 @@
                 width: 100%;
             }
 
-            a {
+            section a {
                 position: absolute;
                 right: 0;
                 top: -12px;
@@ -196,8 +196,25 @@
                 cursor: pointer;
             }
 
-            a:hover {
+            section a:hover {
                 color: #fff;
+            }
+
+            .addPanel a {
+                display: inline;
+                font-weight: 700;
+            }
+
+            .addPanel_Error {
+                display: none;
+            }
+
+            .addError .addPanel .addPanel_Error {
+                display: inline;
+            }
+
+            .addError .addPanel p {
+                display: none;
             }
         </style>
         <meta name="viewport" id="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"/>
@@ -208,6 +225,7 @@
         <main></main>
         <div class="addPanel">
             <p>Please enter the region name <b>exactly</b> as it appears on the government's coronavirus reports.</p>
+            <p class="addPanel_Error">The region you entered did not return any results. Try finding the exact name of your region <a href="https://coronavirus.data.gov.uk/details/interactive-map" target="_blank">here</a>.</p>
             <input type="text" placeholder="e.g. Staffordshire">
             <button class="regionSubmit">Add Region</button>
             <button class="regionCancel">Cancel</button>
@@ -223,7 +241,8 @@
             });
 
             document.body.querySelector(".regionCancel").addEventListener("pointerup", ()=>{
-                document.body.classList.remove("addPanel_Active")
+                document.body.classList.remove("addPanel_Active");
+                document.body.classList.remove("addError");
             });
 
             document.body.querySelector(".regionSubmit").addEventListener("pointerup", ()=>{
@@ -428,12 +447,13 @@
                     return;
                 }
 
-                document.querySelector(".addPanel input").value = "";
-                document.body.classList.remove("addPanel_Active");
-
                 requestAndBuild(regionName, feedList.length, true, (success)=>{
                     if(!success) {
-                        alert("The region you entered did not return any results");
+                        document.body.classList.add("addError");
+                    } else {
+                        document.body.classList.remove("addError");
+                        document.querySelector(".addPanel input").value = "";
+                        document.body.classList.remove("addPanel_Active");
                     }
                 });
             }
