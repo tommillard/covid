@@ -35,7 +35,7 @@
                 color: #ddd;
                 font-size: 14px;
                 border: 1px solid #666;
-                background:#192c3e;
+                background: #192c3e;
                 border-radius: 1px;
                 cursor: pointer;
                 font-family: inherit;
@@ -46,7 +46,7 @@
             }
             main {
                 width: 100%;
-                padding: 5vw
+                padding: 5vw;
             }
             .addPanel_Active main {
                 opacity: 0.25;
@@ -220,43 +220,63 @@
                 display: none;
             }
         </style>
-        <meta name="viewport" id="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"/>
+        <meta
+            name="viewport"
+            id="viewport"
+            content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
+        />
     </head>
     <body>
         <h1></h1>
         <button class="addRegion">Add A New Region</button>
         <main></main>
         <div class="addPanel">
-            <p>Please enter the region name <b>exactly</b> as it appears on the government's coronavirus reports.</p>
-            <p class="addPanel_Error">The region you entered did not return any results. Try finding the exact name of your region <a href="https://coronavirus.data.gov.uk/details/interactive-map" target="_blank">here</a>.</p>
-            <input type="text" placeholder="e.g. Staffordshire">
+            <p>
+                Please enter the region name <b>exactly</b> as it appears on the
+                government's coronavirus reports.
+            </p>
+            <p class="addPanel_Error">
+                The region you entered did not return any results. Try finding
+                the exact name of your region
+                <a
+                    href="https://coronavirus.data.gov.uk/details/interactive-map"
+                    target="_blank"
+                    >here</a
+                >.
+            </p>
+            <input type="text" placeholder="e.g. Staffordshire" />
             <button class="regionSubmit">Add Region</button>
             <button class="regionCancel">Cancel</button>
         </div>
 
         <script type="text/javascript">
-
             "use strict";
 
-            document.body.querySelector("button").addEventListener("pointerup", ()=>{
-                document.body.classList.add("addPanel_Active");
-                document.body.querySelector(".addPanel input").focus();
-            });
+            document.body
+                .querySelector("button")
+                .addEventListener("pointerup", () => {
+                    document.body.classList.add("addPanel_Active");
+                    document.body.querySelector(".addPanel input").focus();
+                });
 
-            document.body.querySelector(".regionCancel").addEventListener("pointerup", ()=>{
-                document.body.classList.remove("addPanel_Active");
-                document.body.classList.remove("addError");
-            });
+            document.body
+                .querySelector(".regionCancel")
+                .addEventListener("pointerup", () => {
+                    document.body.classList.remove("addPanel_Active");
+                    document.body.classList.remove("addError");
+                });
 
-            document.body.querySelector(".regionSubmit").addEventListener("pointerup", ()=>{
-                addRegion();
-            });
-            
+            document.body
+                .querySelector(".regionSubmit")
+                .addEventListener("pointerup", () => {
+                    addRegion();
+                });
+
             var delay = 500;
 
-            var feedList
-            
-            if(localStorage.getItem("covidFeeds")) {
+            var feedList;
+
+            if (localStorage.getItem("covidFeeds")) {
                 feedList = JSON.parse(localStorage.getItem("covidFeeds"));
             } else {
                 feedList = [
@@ -265,27 +285,38 @@
                     "South Staffordshire",
                     "Bolton",
                     "Warwick",
-                    "Staffordshire"
+                    "Staffordshire",
                 ];
             }
 
-            if(!localStorage.getItem("covidFeeds")) {
+            if (!localStorage.getItem("covidFeeds")) {
                 localStorage.setItem("covidFeeds", JSON.stringify(feedList));
             }
 
             var nations = ["England", "Northern Ireland", "Scotland", "Wales"];
-            var regions = ["East Midlands", "East of England", "London", "North East", "North West", "South East", "South West", "West Midlands", "Yorkshire and The Humber"];
+            var regions = [
+                "East Midlands",
+                "East of England",
+                "London",
+                "North East",
+                "North West",
+                "South East",
+                "South West",
+                "West Midlands",
+                "Yorkshire and The Humber",
+            ];
 
-            if(!Array.isArray(feedList)) {
+            if (!Array.isArray(feedList)) {
                 feedList = [];
             }
 
-            
             feedList.forEach((feed, idx) => {
                 requestAndBuild(feed, idx);
             });
 
-            document.body.querySelector("main").appendChild(document.createElement("hr"));
+            document.body
+                .querySelector("main")
+                .appendChild(document.createElement("hr"));
 
             /*
             var utlaWrapper = document.createElement("section");
@@ -306,7 +337,8 @@
                 .then((response) => response.json())
                 .then((json) => {
                     var lastUpdate = json.data[0].date;
-                    document.querySelector("h1").textContent = "Last Updated: " + lastUpdate;
+                    document.querySelector("h1").textContent =
+                        "Last Updated: " + lastUpdate;
                     addPanel(json.data, nationWrapper);
                 });
 
@@ -324,44 +356,49 @@
 
                 var summary = document.createElement("summary");
 
-                data = data.filter(entry => {
+                data = data.filter((entry) => {
                     return entry.newCasesBySpecimenDateRollingSum;
                 });
 
                 var day1Change = document.createElement("figure");
                 var day1Value = document.createElement("h3");
-                day1Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[1].newCasesBySpecimenDateRollingSum);
-                if(day1Value.textContent.substr(0,1) === "+") {
+                day1Value.textContent = generatePercentageChange(
+                    data[0].newCasesBySpecimenDateRollingSum,
+                    data[1].newCasesBySpecimenDateRollingSum
+                );
+                if (day1Value.textContent.substr(0, 1) === "+") {
                     day1Value.classList.add("positive");
-                } else if(day1Value.textContent.substr(0,1) === "-") {
+                } else if (day1Value.textContent.substr(0, 1) === "-") {
                     day1Value.classList.add("negative");
                 }
-                
+
                 var day1Caption = document.createElement("figCaption");
                 day1Caption.textContent = "from yesterday";
                 day1Change.appendChild(day1Value);
                 day1Change.appendChild(day1Caption);
 
-
                 var day7Change = document.createElement("figure");
                 var day7Value = document.createElement("h3");
-                day7Value.textContent = generatePercentageChange(data[0].newCasesBySpecimenDateRollingSum, data[6].newCasesBySpecimenDateRollingSum);
-                if(day7Value.textContent.substr(0,1) === "+") {
+                day7Value.textContent = generatePercentageChange(
+                    data[0].newCasesBySpecimenDateRollingSum,
+                    data[6].newCasesBySpecimenDateRollingSum
+                );
+                if (day7Value.textContent.substr(0, 1) === "+") {
                     day7Value.classList.add("positive");
-                } else if(day7Value.textContent.substr(0,1) === "-") {
+                } else if (day7Value.textContent.substr(0, 1) === "-") {
                     day7Value.classList.add("negative");
                 }
-                
+
                 var day7Caption = document.createElement("figCaption");
                 day7Caption.textContent = "from last week";
                 day7Change.appendChild(day7Value);
                 day7Change.appendChild(day7Caption);
 
-
                 var rateChange = document.createElement("figure");
                 var rateValue = document.createElement("h3");
-                rateValue.textContent = data[0].newCasesBySpecimenDateRollingRate;
-                
+                rateValue.textContent =
+                    data[0].newCasesBySpecimenDateRollingRate;
+
                 var rateCaption = document.createElement("figCaption");
                 rateCaption.textContent = "cases per 100k";
                 rateChange.appendChild(rateValue);
@@ -376,10 +413,10 @@
                 var dataWrapper = document.createElement("div");
                 dataWrapper.classList.add("rawData");
                 wrapper.appendChild(dataWrapper);
-                
+
                 data.forEach((entry, idx) => {
                     var entryWrapper = document.createElement("div");
-                    entryWrapper.classList.add("rawData_Entry")
+                    entryWrapper.classList.add("rawData_Entry");
 
                     var date = document.createElement("time");
                     date.innerHTML = formatDate(entry.date);
@@ -396,7 +433,7 @@
             function generatePercentageChange(val1, val2) {
                 var percentageChange = ((val1 - val2) / val2) * 100;
                 var str = percentageChange.toFixed(1) + "%";
-                if(percentageChange > 0) {
+                if (percentageChange > 0) {
                     return "+" + str;
                 } else {
                     return str;
@@ -406,78 +443,112 @@
             function requestAndBuild(feed, idx, freshRequest, onComplete) {
                 var ltlaWrapper = document.createElement("section");
                 ltlaWrapper.setAttribute("data-idx", idx.toString());
-                if(freshRequest) {
-                    document.body.querySelector("main").insertBefore(ltlaWrapper, document.body.querySelector("hr"));
+                if (freshRequest) {
+                    document.body
+                        .querySelector("main")
+                        .insertBefore(
+                            ltlaWrapper,
+                            document.body.querySelector("hr")
+                        );
                 } else {
-                    document.body.querySelector("main").appendChild(ltlaWrapper);
+                    document.body
+                        .querySelector("main")
+                        .appendChild(ltlaWrapper);
                 }
-                setTimeout(()=>{
-                    fetch(constructURL(feed))
-                        .then((response) => response.json())
-                        .then((json) => {
-                            updateLocalStorage(json.data[0], idx);
-                            addPanel(json.data, ltlaWrapper);
-                            if(onComplete) {
-                                onComplete(true);
-                            }
-                        }).catch(() => {
-                            fetch(constructURL(feed+"|utla"))
-                                .then((response) => response.json())
-                                .then((json) => {
-                                    updateLocalStorage(json.data[0], idx);
-                                    addPanel(json.data, ltlaWrapper);
-                                    if(onComplete) {
-                                        onComplete(true);
-                                    }
-                                }).catch(() => {
-                                    if(onComplete){
-                                        onComplete(false);
-                                    }
-                                });
-                        });
-                }, freshRequest ? 0 : delay * idx);
+                setTimeout(
+                    () => {
+                        fetch(constructURL(feed))
+                            .then((response) => response.json())
+                            .then((json) => {
+                                updateLocalStorage(json.data[0], idx);
+                                addPanel(json.data, ltlaWrapper);
+                                if (onComplete) {
+                                    onComplete(true);
+                                }
+                            })
+                            .catch(() => {
+                                fetch(constructURL(feed + "|utla"))
+                                    .then((response) => response.json())
+                                    .then((json) => {
+                                        updateLocalStorage(json.data[0], idx);
+                                        addPanel(json.data, ltlaWrapper);
+                                        if (onComplete) {
+                                            onComplete(true);
+                                        }
+                                    })
+                                    .catch(() => {
+                                        if (onComplete) {
+                                            onComplete(false);
+                                        }
+                                    });
+                            });
+                    },
+                    freshRequest ? 0 : delay * idx
+                );
             }
 
-            function formatDate (date) {
+            function formatDate(date) {
                 var splitDate = date.split("-");
                 return `${splitDate[2]}/${splitDate[1]}`;
             }
 
-            function addRegion () {
-                var regionName = document.querySelector(".addPanel input").value;
+            function addRegion() {
+                var regionName = document.querySelector(".addPanel input")
+                    .value;
 
-                if(regionName === "") {
+                if (regionName === "") {
                     return;
                 }
 
-                requestAndBuild(regionName, feedList.length, true, (success)=>{
-                    if(!success) {
-                        document.body.classList.add("addError");
-                        document.body.querySelector("main").removeChild(document.body.querySelector(`[data-idx="${feedList.length}"]`));
-                    } else {
-                        document.body.classList.remove("addError");
-                        document.querySelector(".addPanel input").value = "";
-                        document.body.classList.remove("addPanel_Active");
+                requestAndBuild(
+                    regionName,
+                    feedList.length,
+                    true,
+                    (success) => {
+                        if (!success) {
+                            document.body.classList.add("addError");
+                            document.body
+                                .querySelector("main")
+                                .removeChild(
+                                    document.body.querySelector(
+                                        `[data-idx="${feedList.length}"]`
+                                    )
+                                );
+                        } else {
+                            document.body.classList.remove("addError");
+                            document.querySelector(".addPanel input").value =
+                                "";
+                            document.body.classList.remove("addPanel_Active");
+                        }
                     }
-                });
+                );
             }
 
             function removeRegion(e) {
-                var regionIdx = e.target.closest("section").getAttribute("data-idx");
-                document.body.querySelector("main").removeChild(e.target.closest("section"));
+                var regionIdx = e.target
+                    .closest("section")
+                    .getAttribute("data-idx");
+                document.body
+                    .querySelector("main")
+                    .removeChild(e.target.closest("section"));
                 feedList.splice(parseInt(regionIdx, 0), 1);
                 var podList = document.querySelectorAll("section");
 
-                for(var i=0; i<podList.length; i++) {
+                for (var i = 0; i < podList.length; i++) {
                     podList[i].setAttribute("data-idx", i.toString());
                 }
                 localStorage.setItem("covidFeeds", JSON.stringify(feedList));
             }
 
-            function updateURL () {
-                newURL = localStorage["covidFeeds"].reduce((accumulator, current) => {
-                    return accumulator;
-                }, window.location.origin + window.location.pathname + "?feeds=");
+            function updateURL() {
+                newURL = localStorage["covidFeeds"].reduce(
+                    (accumulator, current) => {
+                        return accumulator;
+                    },
+                    window.location.origin +
+                        window.location.pathname +
+                        "?feeds="
+                );
             }
 
             function updateLocalStorage(entry, idx) {
@@ -490,38 +561,38 @@
 
                 var areaType;
 
-                if(splitName[1]) {
+                if (splitName[1]) {
                     areaType = splitName[1];
-                } else if(areaName.toLowerCase() == "united kingdom") {
+                } else if (areaName.toLowerCase() == "united kingdom") {
                     areaType = "overview";
-                } else if(nations.indexOf(areaName.toLowerCase()) >= 0) {
+                } else if (nations.indexOf(areaName.toLowerCase()) >= 0) {
                     areaType = "nation";
-                } else if(regions.indexOf(areaName.toLowerCase()) >= 0) {
+                } else if (regions.indexOf(areaName.toLowerCase()) >= 0) {
                     areaType = "region";
                 } else {
                     areaType = "ltla";
                 }
-                
-                return "https://coronavirus.data.gov.uk/api/v1/data?filters="
-                    + "areaType="
-                    + areaType + ";"
-                    + "areaName="
-                    + encodeURI(splitName[0])
-                    + "&structure=%7B"
-                    + "%22areaType%22:%22areaType%22,"
-                    + "%22areaName%22:%22areaName%22,"
-                    + "%22date%22:%22date%22,"
-                    + "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22,"
-                    + "%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22,"
-                    + "%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22" 
-                    + "%7D"
-                    + "&format=json";
+
+                return (
+                    "https://coronavirus.data.gov.uk/api/v1/data?filters=" +
+                    "areaType=" +
+                    areaType +
+                    ";" +
+                    "areaName=" +
+                    encodeURI(splitName[0]) +
+                    "&structure=%7B" +
+                    "%22areaType%22:%22areaType%22," +
+                    "%22areaName%22:%22areaName%22," +
+                    "%22date%22:%22date%22," +
+                    "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22," +
+                    "%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22," +
+                    "%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22" +
+                    "%7D" +
+                    "&format=json"
+                );
             }
 
-            function showFeedInput () {
-
-            }
-
+            function showFeedInput() {}
         </script>
     </body>
 </html>
