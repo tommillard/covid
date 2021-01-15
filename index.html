@@ -5,7 +5,7 @@
         <style>
             html,
             body {
-                background: #222;
+                background: #121f2b;
                 font-family: apple-system, sans-serif;
                 margin: 0;
                 padding: 0;
@@ -18,10 +18,10 @@
             }
             h1 {
                 font-size: 12px;
-
                 position: absolute;
-                right: 5vw;
-                top: 2vw;
+                right: 3vw;
+                top: 1.5vw;
+                font-weight: 400;
             }
             button {
                 margin: 0;
@@ -33,9 +33,10 @@
                 border: 0;
                 background: none;
                 color: #ddd;
-                font-size: 16px;
+                font-size: 14px;
                 border: 1px solid #666;
-                border-radius: 5px;
+                background:#192c3e;
+                border-radius: 3px;
                 cursor: pointer;
                 font-family: inherit;
                 outline: 0;
@@ -116,14 +117,14 @@
                 height: 24px;
                 align-items: center;
             }
-            article time,
-            article p,
-            article b {
+            .rawData time,
+            .rawData p,
+            .rawData b {
                 font-size: 14px;
                 margin-right: 15px;
                 width: 50px;
             }
-            time {
+            .rawData time {
                 color: #999;
             }
             .addPanel {
@@ -131,6 +132,7 @@
                 max-width: 400px;
                 transform: translate3d(-50%, -50%, 0);
                 background: #ddd;
+                border-radius: 2px;
                 top: 50%;
                 position: absolute;
                 left: 50%;
@@ -149,13 +151,16 @@
                 padding: 10px;
                 font-size: 16px;
                 color: #333;
+                outline: 0;
+                border-radius: 2px;
+                border: 1px solid #b1b9c1;
             }
             .regionSubmit {
                 width: 100%;
                 padding: 0;
                 margin: 0;
                 color: #fff;
-                background: #333;
+                background: #111f2c;
                 font-weight: 700;
                 margin-bottom: 10px;
             }
@@ -199,7 +204,7 @@
     </head>
     <body>
         <h1></h1>
-        <button class="addRegion">Add an area</button>
+        <button class="addRegion">Add A New Region</button>
         <main></main>
         <div class="addPanel">
             <p>Please enter the region name <b>exactly</b> as it appears on the government's coronavirus reports.</p>
