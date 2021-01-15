@@ -184,16 +184,16 @@
             a {
                 position: absolute;
                 right: 0;
-                top: 0;
-                line-height: 25px;
-                font-size: 11px;
-                color: #bbb;
+                top: -12px;
+                height: 45px;
+                width: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                font-size: 12px;
+                color: #6195c2;
                 cursor: pointer;
-                display: none;
-            }
-
-            section:hover a {
-                display: block;
             }
 
             a:hover {
@@ -294,7 +294,7 @@
                 wrapper.appendChild(title);
 
                 var remove = document.createElement("a");
-                remove.textContent = "Remove";
+                remove.textContent = "[X]";
                 remove.addEventListener("pointerup", (e) => {
                     removeRegion(e);
                 });
