@@ -84,8 +84,11 @@
                 margin-bottom: 40px;
                 max-width: 450px;
                 min-width: 300px;
-                margin-right: 20px;
+                margin: 20px;
                 position: relative;
+            }
+            section:empty {
+                display: none;
             }
             hr {
                 border: 0;
@@ -450,6 +453,7 @@
                 requestAndBuild(regionName, feedList.length, true, (success)=>{
                     if(!success) {
                         document.body.classList.add("addError");
+                        document.body.querySelector("main").removeChild(document.body.querySelector(`[data-idx="${feedList.length}"]`));
                     } else {
                         document.body.classList.remove("addError");
                         document.querySelector(".addPanel input").value = "";
