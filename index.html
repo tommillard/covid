@@ -387,7 +387,7 @@
                 var day7Value = document.createElement("h3");
                 day7Value.textContent = generatePercentageChange(
                     data[0].newCasesBySpecimenDateRollingSum,
-                    data[6].newCasesBySpecimenDateRollingSum
+                    data[7].newCasesBySpecimenDateRollingSum
                 );
                 if (day7Value.textContent.substr(0, 1) === "+") {
                     day7Value.classList.add("positive");
@@ -436,9 +436,11 @@
                 });
             }
 
-            function generatePercentageChange(val1, val2) {
-                var percentageChange = ((val1 - val2) / val2) * 100;
+            function generatePercentageChange(newValue, oldValue) {
+                console.log(newValue, oldValue);
+                var percentageChange = ((newValue - oldValue) / oldValue) * 100;
                 var str = percentageChange.toFixed(1) + "%";
+                console.log(str);
                 if (percentageChange > 0) {
                     return "+" + str;
                 } else {
