@@ -502,7 +502,7 @@
 
             function addRegion() {
                 var regionName = document.querySelector(".addPanel input")
-                    .value;
+                    .value.trim();
 
                 if (regionName === "") {
                     return;
