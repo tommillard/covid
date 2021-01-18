@@ -53,13 +53,13 @@ var regions = [
 ];
 var colours = [
     "#FFECDB",
-    "#d10046",
+    "#D10046",
     "#428BCA",
     "#F0AD4E",
     "#69D100",
-    "#8E44AD",
+    "#D695BE",
     "#7F8C8D",
-    "#A295D6",
+    "#8E44AD",
     "#AD4363",
     "#D1D100",
     "#AD8D43",
@@ -83,13 +83,13 @@ nationWrapper.style.color = colours[0];
 
 document.body.querySelector(".wrapper").appendChild(nationWrapper);
 
-colours.forEach((colour) => {
+/*colours.forEach((colour) => {
     var r = document.createElement("div");
     r.style.backgroundColor = colour;
     r.style.width = "30px";
     r.style.height = "30px";
     document.body.querySelector(".wrapper").appendChild(r);
-});
+});*/
 
 fetch(constructURL("England|nation"))
     .then((response) => response.json())
