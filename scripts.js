@@ -51,6 +51,19 @@ var regions = [
     "West Midlands",
     "Yorkshire and The Humber",
 ];
+var colours = [
+    "#FFECDB",
+    "#d10046",
+    "#428BCA",
+    "#F0AD4E",
+    "#69D100",
+    "#8E44AD",
+    "#7F8C8D",
+    "#A295D6",
+    "#AD4363",
+    "#D1D100",
+    "#AD8D43",
+];
 
 if (!Array.isArray(feedList)) {
     feedList = [];
@@ -66,8 +79,17 @@ document.body
 
 var nationWrapper = document.createElement("section");
 nationWrapper.classList.add("dataPod");
+nationWrapper.style.color = colours[0];
 
 document.body.querySelector(".wrapper").appendChild(nationWrapper);
+
+colours.forEach((colour) => {
+    var r = document.createElement("div");
+    r.style.backgroundColor = colour;
+    r.style.width = "30px";
+    r.style.height = "30px";
+    document.body.querySelector(".wrapper").appendChild(r);
+});
 
 fetch(constructURL("England|nation"))
     .then((response) => response.json())
@@ -200,6 +222,7 @@ function generatePercentageChange(newValue, oldValue) {
 function requestAndBuild(feed, idx, freshRequest, onComplete) {
     var ltlaWrapper = document.createElement("section");
     ltlaWrapper.classList.add("dataPod");
+    ltlaWrapper.style.color = colours[idx + 1];
     ltlaWrapper.setAttribute("data-idx", idx.toString());
     if (freshRequest) {
         document.body
