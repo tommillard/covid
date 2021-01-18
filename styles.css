@@ -18,7 +18,7 @@ body {
     top: 1.5vw;
     font-weight: 400;
 }
-button {
+.addRegion {
     margin: 0;
     height: 45px;
     margin-left: calc(5vw + 20px);
@@ -29,14 +29,14 @@ button {
     background: none;
     color: #ddd;
     font-size: 14px;
-    border: 1px solid #666;
+    border: 1px solid#6195c2;
     background: #192c3e;
     border-radius: 1px;
     cursor: pointer;
     font-family: inherit;
     outline: 0;
 }
-button:focus {
+.addRegion:focus {
     appearance: none;
 }
 .wrapper {
