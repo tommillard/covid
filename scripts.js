@@ -94,6 +94,15 @@ var mainChart = new Chart(mainCtx, {
             legend: {
                 display: false,
             },
+            tooltip: {
+                multiKeyBackground: "#000",
+                boxWidth: 5,
+                boxHeight: 5,
+                bodySpacing: 5,
+                itemSort: (a, b) => {
+                    return b.dataPoint.y - a.dataPoint.y;
+                },
+            },
         },
         scales: {
             x: {
@@ -160,6 +169,7 @@ function convertDataForGraph() {
             borderColor: dataSet.colour,
             borderWidth: 1,
             pointRadius: 0,
+            pointHitRadius: 10,
             label: dataSet.values[0].areaName,
         };
     });
