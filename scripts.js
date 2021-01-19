@@ -253,8 +253,8 @@ function addPanel(data, wrapper) {
     var dataLabel = document.createElement("p");
     dataLabel.classList.add("dataPod_RawData-Title");
     dataLabel.textContent = "Cases by day";
+    //wrapper.appendChild(dataLabel);
 
-    wrapper.appendChild(dataLabel);
     var dataWrapper = document.createElement("div");
     dataWrapper.classList.add("dataPod_RawData");
     wrapper.appendChild(dataWrapper);
@@ -271,6 +271,7 @@ function addPanel(data, wrapper) {
         var value = document.createElement("b");
         value.classList.add("dataPod_RawData-Value");
         value.innerHTML = entry.newCasesByPublishDate;
+        value.innerHTML = entry.newCasesBySpecimenDateRollingSum;
         entryWrapper.appendChild(value);
 
         dataWrapper.appendChild(entryWrapper);

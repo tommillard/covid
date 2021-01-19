@@ -12,17 +12,14 @@ body {
     box-sizing: border-box;
 }
 .header {
-    height: 60px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;
+    padding: 15px;
 }
 .header_LastUpdated {
     font-size: 12px;
-    right: calc(5vw + 10px);
-    top: 1.5vw;
     font-weight: 400;
     color: #6689a9;
 }
