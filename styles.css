@@ -10,6 +10,7 @@ body {
 }
 * {
     box-sizing: border-box;
+    user-select: none;
 }
 .header {
     width: 100%;
