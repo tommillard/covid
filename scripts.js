@@ -1,9 +1,11 @@
 "use strict";
 
-document.body.querySelector(".addRegion").addEventListener("pointerup", () => {
-    document.body.classList.add("addPanel_Active");
-    document.body.querySelector(".addPanel_Input").focus();
-});
+document.body
+    .querySelector(".header_AddRegion")
+    .addEventListener("pointerup", () => {
+        document.body.classList.add("addPanel_Active");
+        document.body.querySelector(".addPanel_Input").focus();
+    });
 
 document.body
     .querySelector(".addPanel_Cancel")
@@ -69,8 +71,45 @@ if (!Array.isArray(feedList)) {
     feedList = [];
 }
 
+var dataCollection = new Array(feedList.length + 1);
+
 feedList.forEach((feed, idx) => {
     requestAndBuild(feed, idx);
+});
+
+var mainCtx = document.querySelector(".mainGraph_Canvas");
+
+var mainChart = new Chart(mainCtx, {
+    type: "line",
+    data: {
+        datasets: convertDataForGraph(),
+    },
+    options: {
+        maintainAspectRatio: false,
+        parsing: {
+            xAxisKey: "date",
+            yAxisKey: "newCasesBySpecimenDateRollingRate",
+        },
+        plugins: {
+            legend: {
+                display: false,
+            },
+        },
+        scales: {
+            x: {
+                display: false,
+                ticks: {
+                    autoSkipPadding: 50,
+                },
+            },
+            y: {
+                display: false,
+                ticks: {
+                    autoSkipPadding: 50,
+                },
+            },
+        },
+    },
 });
 
 document.body
@@ -98,10 +137,39 @@ fetch(constructURL("England|nation"))
             json.data[0].date,
             "{{day}} {{date}} {{month}}"
         );
-        document.querySelector(".lastUpdated").textContent =
+        document.querySelector(".header_LastUpdated").textContent =
             "Last Updated: " + lastUpdate;
+        dataCollection[0] = {
+            values: json.data,
+            colour: colours[0],
+        };
+        mainChart.data.datasets = convertDataForGraph();
+        mainChart.update("resize");
         addPanel(json.data, nationWrapper);
     });
+
+function convertDataForGraph() {
+    var dataForGraph = dataCollection.map((dataSet) => {
+        return {
+            data: dataSet.values
+                .filter((entry) => {
+                    return entry.newCasesBySpecimenDateRollingRate;
+                })
+                .slice(0, 120)
+                .reverse(),
+            borderColor: dataSet.colour,
+            borderWidth: 1,
+            pointRadius: 0,
+            label: dataSet.values[0].areaName,
+        };
+    });
+
+    dataForGraph = dataForGraph.filter((d) => {
+        return d.data.length;
+    });
+
+    return dataForGraph;
+}
 
 function addPanel(data, wrapper) {
     var title = document.createElement("h2");
@@ -237,7 +305,14 @@ function requestAndBuild(feed, idx, freshRequest, onComplete) {
                 .then((response) => response.json())
                 .then((json) => {
                     updateLocalStorage(json.data[0], idx);
+                    dataCollection[idx + 1] = {
+                        values: json.data,
+                        colour: colours[idx + 1],
+                    };
+                    mainChart.data.datasets = convertDataForGraph();
+                    mainChart.update("resize");
                     addPanel(json.data, ltlaWrapper);
+
                     if (onComplete) {
                         onComplete(true);
                     }
@@ -247,7 +322,14 @@ function requestAndBuild(feed, idx, freshRequest, onComplete) {
                         .then((response) => response.json())
                         .then((json) => {
                             updateLocalStorage(json.data[0], idx);
+                            dataCollection[idx + 1] = {
+                                values: json.data,
+                                colour: colours[idx + 1],
+                            };
+                            mainChart.data.datasets = convertDataForGraph();
+                            mainChart.update();
                             addPanel(json.data, ltlaWrapper);
+
                             if (onComplete) {
                                 onComplete(true);
                             }

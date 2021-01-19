@@ -8,10 +8,16 @@
             id="viewport"
             content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
         />
+        <script src="./chart.min.js"></script>
     </head>
     <body>
-        <p class="lastUpdated"></p>
-        <button class="addRegion">Add A New Region</button>
+        <header class="header">
+            <button class="header_AddRegion">Add A New Region</button>
+            <p class="header_LastUpdated"></p>
+        </header>
+        <div class="mainGraph">
+            <canvas class="mainGraph_Canvas" id="myChart"></canvas>
+        </div>
         <main class="wrapper"></main>
         <div class="addPanel">
             <p class="addPanel_Intro">
