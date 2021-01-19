@@ -95,6 +95,11 @@ var mainChart = new Chart(mainCtx, {
                 display: false,
             },
             tooltip: {
+                callbacks: {
+                    title: (val) => {
+                        return formatDate(val[0].label, "{{date}} {{month}}");
+                    },
+                },
                 multiKeyBackground: "#000",
                 boxWidth: 5,
                 boxHeight: 5,
