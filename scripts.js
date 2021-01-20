@@ -100,10 +100,14 @@ var mainChart = new Chart(mainCtx, {
                         return formatDate(val[0].label, "{{date}} {{month}}");
                     },
                     label: (val) => {
-                        return " " + val.dataset.label;
+                        return (
+                            " " + val.dataset.label + "  " + val.formattedValue
+                        );
                     },
                 },
                 multiKeyBackground: "#000",
+                xPadding: 10,
+                yPadding: 10,
                 boxWidth: 5,
                 boxHeight: 5,
                 bodySpacing: 5,
