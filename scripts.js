@@ -294,6 +294,7 @@ function addPanel(data, wrapper) {
         value.classList.add("dataPod_RawData-Value");
         value.innerHTML = entry.newCasesByPublishDate;
         value.innerHTML = entry.newCasesBySpecimenDateRollingSum;
+        value.innerHTML = entry.newCasesBySpecimenDateRollingRate;
         entryWrapper.appendChild(value);
 
         dataWrapper.appendChild(entryWrapper);
