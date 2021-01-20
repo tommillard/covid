@@ -99,6 +99,9 @@ var mainChart = new Chart(mainCtx, {
                     title: (val) => {
                         return formatDate(val[0].label, "{{date}} {{month}}");
                     },
+                    label: (val) => {
+                        return " " + val.dataset.label;
+                    },
                 },
                 multiKeyBackground: "#000",
                 boxWidth: 5,
