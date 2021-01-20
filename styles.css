@@ -50,6 +50,7 @@ body {
 .mainGraph {
     width: 100%;
     height: 300px;
+    padding-right: 20px;
 }
 .mainGraph_Canvas {
     border: 1px solid #121f2b;
