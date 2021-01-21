@@ -120,22 +120,23 @@ var mainChart = new Chart(mainCtx, {
             x: {
                 display: false,
                 ticks: {
-                    autoSkipPadding: 50,
+                    display: false,
                 },
             },
             y: {
-                display: false,
+                //display: false,
                 ticks: {
-                    autoSkipPadding: 50,
+                    display: false,
+                    //autoSkipPadding: 50,
                 },
             },
         },
     },
 });
 
-document.body
-    .querySelector(".wrapper")
-    .appendChild(document.createElement("hr"));
+let divider = document.createElement("div");
+divider.classList.add("divider");
+document.body.querySelector(".wrapper").appendChild(divider);
 
 var nationWrapper = document.createElement("section");
 nationWrapper.classList.add("dataPod");
@@ -176,7 +177,7 @@ function convertDataForGraph() {
                 .filter((entry) => {
                     return entry.newCasesBySpecimenDateRollingRate;
                 })
-                .slice(0, 120)
+                .slice(0, 30)
                 .reverse(),
             borderColor: dataSet.colour,
             borderWidth: 1,
@@ -317,9 +318,10 @@ function requestAndBuild(feed, idx, freshRequest, onComplete) {
     ltlaWrapper.style.color = colours[idx + 1];
     ltlaWrapper.setAttribute("data-idx", idx.toString());
     if (freshRequest) {
+        let divider = document.querySelector(".divider");
         document.body
             .querySelector(".wrapper")
-            .insertBefore(ltlaWrapper, document.body.querySelector("hr"));
+            .insertBefore(ltlaWrapper, divider);
     } else {
         document.body.querySelector(".wrapper").appendChild(ltlaWrapper);
     }
@@ -413,6 +415,9 @@ function removeRegion(e) {
         .querySelector(".wrapper")
         .removeChild(e.target.closest("section"));
     feedList.splice(parseInt(regionIdx, 0), 1);
+    dataCollection.splice(parseInt(regionIdx + 1, 0), 1);
+    mainChart.data.datasets = convertDataForGraph();
+    mainChart.update();
     var podList = document.querySelectorAll("section");
 
     for (var i = 0; i < podList.length; i++) {

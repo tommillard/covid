@@ -58,6 +58,8 @@ body {
 .wrapper {
     width: 100%;
     padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 .addPanel_Active .wrapper {
     opacity: 0.25;
@@ -145,10 +147,12 @@ body {
 .dataPod_SummaryValue-Neg {
     color: #66cc66;
 }
-hr {
+.divider {
     border: 0;
-    border-bottom: 1px dotted #333;
+    border-bottom: 1px dotted #33485b;
     margin-bottom: 20px;
+    grid-column: 1/-1;
+    width: 100%;
 }
 
 .dataPod_RawData-Title {
