@@ -177,10 +177,11 @@ function convertDataForGraph() {
                 .filter((entry) => {
                     return entry.newCasesBySpecimenDateRollingRate;
                 })
-                .slice(0, 30)
+                .slice(0, 120)
                 .reverse(),
             borderColor: dataSet.colour,
             borderWidth: 1,
+            tension: 0.1,
             pointRadius: 0,
             pointHitRadius: 10,
             label: dataSet.values[0].areaName,
