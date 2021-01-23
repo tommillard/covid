@@ -74,7 +74,7 @@ class App {
             idx: 0,
             colour: "#FFECDB",
         });
-
+        debugger;
         this.convertOldStyleFeedList();
 
         this.feedList.forEach((feed, idx) => {
@@ -89,7 +89,7 @@ class App {
     }
 
     convertOldStyleFeedList = () => {
-        if (this.feedList.length && this.feedList[0].colour) {
+        if (!this.feedList.length || this.feedList[0].colour) {
             return;
         }
         this.feedList = this.feedList.map((feed, idx) => {
@@ -101,7 +101,7 @@ class App {
         });
 
         if (localStorage.getItem("covidFeeds")) {
-            this.updateStorage();
+            //this.updateStorage();
         }
     };
 
