@@ -2,48 +2,28 @@
 <html>
     <head>
         <title>COVID Tracker</title>
-        <link href="./styles.css" rel="stylesheet" type="text/css" />
         <meta
             name="viewport"
             id="viewport"
             content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
         />
-        <script src="./chart.min.js"></script>
+        <script src="./utils/chart.min.js"></script>
+        <script src="./utils/presets.js"></script>
+        <script src="./utils/createElement.js"></script>
+        <script src="./utils/formatDate.js"></script>
+        <script src="./header/header.js"></script>
+        <script src="./addPanel/addPanel.js"></script>
+        <script src="./masterChart/masterChart.js"></script>
+        <script src="./podCollection/podCollection.js"></script>
+        <script src="./dataPod/dataPod.js"></script>
     </head>
     <body>
-        <header class="header">
-            <button class="header_AddRegion">Add A New Region</button>
-            <p class="header_LastUpdated"></p>
-        </header>
-        <div class="mainGraph">
-            <canvas class="mainGraph_Canvas" id="myChart"></canvas>
-        </div>
-        <main class="wrapper"></main>
-        <div class="addPanel">
-            <p class="addPanel_Intro">
-                Please enter the region name <b>exactly</b> as it appears on the
-                government's coronavirus reports.
-            </p>
-            <p class="addPanel_Error">
-                The region you entered did not return any results. Try finding
-                the exact name of your region
-                <a
-                    class="addPanel_Link"
-                    href="https://coronavirus.data.gov.uk/details/interactive-map"
-                    target="_blank"
-                    >here</a
-                >.
-            </p>
-            <input
-                class="addPanel_Input"
-                type="text"
-                autocomplete="false"
-                placeholder="e.g. Staffordshire"
-            />
-            <button class="addPanel_Submit">Add Region</button>
-            <button class="addPanel_Cancel">Cancel</button>
-        </div>
-        <script src="./dataPod.js"></script>
-        <script src="./scripts.js"></script>
+        <script src="./app.js"></script>
+        <script type="text/javascript">
+            "use strict";
+
+            const app = new App();
+            document.body.appendChild(app.container);
+        </script>
     </body>
 </html>

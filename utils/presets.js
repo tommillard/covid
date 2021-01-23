@@ -1,0 +1,27 @@
+var Presets = {
+    nations: ["England", "Northern Ireland", "Scotland", "Wales"],
+    regions: [
+        "East Midlands",
+        "East of England",
+        "London",
+        "North East",
+        "North West",
+        "South East",
+        "South West",
+        "West Midlands",
+        "Yorkshire and The Humber",
+    ],
+    colours: [
+        "#D10046",
+        "#428BCA",
+        "#F0AD4E",
+        "#69D100",
+        "#D695BE",
+        "#7F8C8D",
+        "#8E44AD",
+        "#AD4363",
+        "#D1D100",
+        "#AD8D43",
+    ],
+    initialFeed: ["Newcastle-under-Lyme", "Staffordshire"],
+};

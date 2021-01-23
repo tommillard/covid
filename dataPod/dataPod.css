@@ -1,0 +1,114 @@
+.dataPod {
+    display: inline-block;
+    margin-bottom: 40px;
+    max-width: 450px;
+    min-width: 300px;
+    margin: 20px;
+    position: relative;
+}
+.dataPod:before {
+    width: 3px;
+    height: 25px;
+    content: "";
+    background: currentColor;
+    position: absolute;
+    left: -10px;
+    top: 0;
+    height: 25px;
+    border-radius: 2px;
+}
+.dataPod:empty {
+    display: none;
+}
+.dataPod_Title {
+    font-size: 20px;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 24px;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    width: 100%;
+    margin-bottom: 10px;
+    width: 100%;
+    border-bottom: 1px solid #33485b;
+}
+.dataPod_Remove:hover {
+    color: #fff;
+}
+
+.dataPod_Remove {
+    position: absolute;
+    right: 0;
+    top: -12px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 12px;
+    color: #6195c2;
+    cursor: pointer;
+}
+.dataPod_Summary {
+    margin-bottom: 10px;
+}
+.dataPod_SummaryItem {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 0;
+    margin: 0;
+    padding-right: 20px;
+    width: 33%;
+}
+.dataPod_SummaryValue {
+    font-size: 20px;
+    line-height: 24px;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+}
+.dataPod_SummaryLabel {
+    font-size: 11px;
+    line-height: 20px;
+    color: #6689a9;
+}
+.dataPod_SummaryValue-Pos {
+    color: #eb4747;
+}
+.dataPod_SummaryValue-Neg {
+    color: #66cc66;
+}
+
+.dataPod_RawData-Title {
+    font-size: 11px;
+    color: #6195c2;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 2px;
+}
+
+.dataPod_RawData {
+    height: 110px;
+    width: 50%;
+    overflow-y: scroll;
+}
+.dataPod_RawDataItem {
+    display: flex;
+    flex-wrap: nowrap;
+    font-size: 0;
+    line-height: 0;
+    height: 22px;
+    align-items: center;
+}
+.dataPod_RawData-Date,
+.dataPod_RawData-Value {
+    font-size: 14px;
+    margin-right: 15px;
+    width: 50px;
+    color: #fff;
+}
+.dataPod_RawData-Date {
+    color: #6689a9;
+}

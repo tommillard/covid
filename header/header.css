@@ -1,0 +1,36 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+.header_LastUpdated {
+    font-size: 12px;
+    font-weight: 400;
+    color: #6689a9;
+}
+
+.header_AddRegion {
+    margin: 0;
+    height: 45px;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 1px;
+    border: 1px solid #33485b;
+    background: #121f2b;
+    cursor: pointer;
+    font-family: inherit;
+    outline: 0;
+}
+.addRegion:focus {
+    appearance: none;
+}
