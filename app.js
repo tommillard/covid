@@ -133,7 +133,7 @@ class App {
                 this.updateStorage();
             },
             onFailure: (pod) => {
-                this.areaPods.removeRegion(pod);
+                this.areaPods.removePod(pod);
                 this.addPanel.showError();
             },
         });
