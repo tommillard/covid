@@ -74,7 +74,7 @@ class App {
             idx: 0,
             colour: "#FFECDB",
         });
-        debugger;
+
         this.convertOldStyleFeedList();
 
         this.feedList.forEach((feed, idx) => {
