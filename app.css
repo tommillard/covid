@@ -12,6 +12,9 @@ body {
     box-sizing: border-box;
     user-select: none;
 }
+main {
+    transition: opacity 0.5s;
+}
 .wrapper {
     width: 100%;
     padding: 20px;

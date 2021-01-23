@@ -22,6 +22,8 @@ class App {
     areaPods;
     nationalPods;
 
+    loadedPods = 0;
+
     availableMetrics = [
         {
             label: "Cases/100k",
@@ -33,14 +35,7 @@ class App {
 
     constructor() {
         this.container = document.createElement("main");
-
-        createElement({
-            elementType: "link",
-            href: "./app.css",
-            rel: "stylesheet",
-            type: "text/css",
-            appendTo: document.head,
-        });
+        this.container.style.opacity = 0;
 
         this.header = new Header(this);
         this.container.appendChild(this.header.container);
@@ -171,6 +166,11 @@ class App {
         this.masterChart.update();
         this.header.setLastUpdated(pod.lastUpdated);
         this.updateStorage();
+        this.loadedPods++;
+
+        if (this.loadedPods >= this.feedList.length) {
+            this.container.style.opacity = 1;
+        }
     };
 
     updateStorage = () => {
