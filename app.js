@@ -138,7 +138,7 @@ class App {
                 this.updateStorage();
             },
             onFailure: (pod) => {
-                this.removeRegion(pod);
+                this.areaPods.removeRegion(pod);
                 this.addPanel.showError();
             },
         });
@@ -170,6 +170,7 @@ class App {
     podHasUpdated = (pod) => {
         this.masterChart.update();
         this.header.setLastUpdated(pod.lastUpdated);
+        this.updateStorage();
     };
 
     updateStorage = () => {
