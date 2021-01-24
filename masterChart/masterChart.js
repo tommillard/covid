@@ -116,7 +116,7 @@ class MasterChart {
             this.app.nationalPods.pods[0] &&
             this.app.nationalPods.pods[0].data
         ) {
-            this.chart.data.datasets.splice(0, 0, {
+            datasets.splice(0, 0, {
                 data: JSON.parse(
                     JSON.stringify(this.app.nationalPods.pods[0].data)
                 ).slice(0, this.range),
@@ -125,15 +125,13 @@ class MasterChart {
             });
         }
 
-        datasets = datasets.map((dataset) => {
+        this.chart.data.datasets = datasets.map((dataset) => {
             return {
                 data: dataset.data.reverse(),
                 borderColor: dataset.borderColor,
                 label: dataset.label,
             };
         });
-
-        this.chart.data.datasets = JSON.parse(JSON.stringify(datasets));
 
         this.chart.update();
     };
