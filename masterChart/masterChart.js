@@ -77,7 +77,7 @@ class MasterChart {
                 },
                 scales: {
                     x: {
-                        reverse: true,
+                        //reverse: true,
                         display: false,
                         ticks: {
                             display: false,
@@ -100,6 +100,7 @@ class MasterChart {
             .filter((pod) => {
                 return pod.data;
             })
+            .reverse()
             .map((areaPod) => {
                 return {
                     data: areaPod.data.slice(0, this.range),
@@ -110,7 +111,9 @@ class MasterChart {
 
         if (this.app.nationalPods.pods[0].data) {
             this.chart.data.datasets.splice(0, 0, {
-                data: this.app.nationalPods.pods[0].data.slice(0, this.range),
+                data: this.app.nationalPods.pods[0].data
+                    .slice(0, this.range)
+                    .reverse(),
                 borderColor: this.app.nationalPods.pods[0].colour,
                 label: this.app.nationalPods.pods[0].data[0].areaName,
             });
