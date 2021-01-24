@@ -79,7 +79,6 @@ class MasterChart {
                 },
                 scales: {
                     x: {
-                        //reverse: true,
                         display: false,
                         ticks: {
                             display: false,
@@ -98,14 +97,16 @@ class MasterChart {
     update = () => {
         this.chart.options.parsing.yAxisKey = this.app.currentMetric.key;
 
-        this.chart.data.datasets = this.app.areaPods.pods
+        let datasets = this.app.areaPods.pods
             .filter((pod) => {
                 return pod.data;
             })
-            .reverse()
             .map((areaPod) => {
                 return {
-                    data: areaPod.data.slice(0, this.range),
+                    data: JSON.parse(JSON.stringify(areaPod.data)).slice(
+                        0,
+                        this.range
+                    ),
                     borderColor: areaPod.colour,
                     label: areaPod.data[0].areaName,
                 };
@@ -116,13 +117,23 @@ class MasterChart {
             this.app.nationalPods.pods[0].data
         ) {
             this.chart.data.datasets.splice(0, 0, {
-                data: this.app.nationalPods.pods[0].data
-                    .slice(0, this.range)
-                    .reverse(),
+                data: JSON.parse(
+                    JSON.stringify(this.app.nationalPods.pods[0].data)
+                ).slice(0, this.range),
                 borderColor: this.app.nationalPods.pods[0].colour,
                 label: this.app.nationalPods.pods[0].data[0].areaName,
             });
         }
+
+        datasets = datasets.map((dataset) => {
+            return {
+                data: dataset.data.reverse(),
+                borderColor: dataset.borderColor,
+                label: dataset.label,
+            };
+        });
+
+        this.chart.data.datasets = JSON.parse(JSON.stringify(datasets));
 
         this.chart.update();
     };
