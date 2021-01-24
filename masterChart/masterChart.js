@@ -1,3 +1,5 @@
+"use strict";
+
 class MasterChart {
     container;
     context;
@@ -109,7 +111,10 @@ class MasterChart {
                 };
             });
 
-        if (this.app.nationalPods.pods[0].data) {
+        if (
+            this.app.nationalPods.pods[0] &&
+            this.app.nationalPods.pods[0].data
+        ) {
             this.chart.data.datasets.splice(0, 0, {
                 data: this.app.nationalPods.pods[0].data
                     .slice(0, this.range)

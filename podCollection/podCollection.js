@@ -15,8 +15,15 @@ class PodCollection {
     }
 
     registerPod = (pod) => {
+        if (pod.index >= this.pods.length) {
+            this.container.appendChild(pod.container);
+        } else {
+            this.container.insertBefore(
+                pod.container,
+                this.container.children[pod.index]
+            );
+        }
         this.pods.push(pod);
-        this.container.appendChild(pod.container);
     };
 
     podHasUpdated = (pod) => {

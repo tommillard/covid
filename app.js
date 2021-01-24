@@ -22,7 +22,7 @@ class App {
     areaPods;
     nationalPods;
 
-    loadedPods = 0;
+    loadedPods = [];
 
     availableMetrics = [
         {
@@ -40,9 +40,6 @@ class App {
         this.header = new Header(this);
         this.container.appendChild(this.header.container);
 
-        this.addPanel = new AddPanel(this);
-        this.container.appendChild(this.addPanel.container);
-
         this.masterChart = new MasterChart(this);
         this.container.appendChild(this.masterChart.container);
 
@@ -55,6 +52,9 @@ class App {
 
         this.nationalPods = new PodCollection(this);
         this.container.appendChild(this.nationalPods.container);
+
+        this.addPanel = new AddPanel(this);
+        this.container.appendChild(this.addPanel.container);
 
         this.feedList = this.loadFeedList();
 
@@ -96,7 +96,7 @@ class App {
         });
 
         if (localStorage.getItem("covidFeeds")) {
-            //this.updateStorage();
+            localStorage.setItem("covidFeeds", JSON.stringify(this.feedList));
         }
     };
 
@@ -164,11 +164,12 @@ class App {
 
     podHasUpdated = (pod) => {
         this.masterChart.update();
-        this.header.setLastUpdated(pod.lastUpdated);
-        this.updateStorage();
-        this.loadedPods++;
+        if (pod && this.loadedPods.indexOf(pod.id) < 0) {
+            this.header.setLastUpdated(pod.lastUpdated);
+            this.loadedPods.push(pod.id);
+        }
 
-        if (this.loadedPods >= this.feedList.length) {
+        if (this.loadedPods.length === this.feedList.length + 1) {
             this.container.style.opacity = 1;
         }
     };

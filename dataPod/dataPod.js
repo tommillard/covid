@@ -28,6 +28,7 @@ class DataPod {
         this.colour = options.colour;
         this.metric = options.metric;
         this.feed = options.feed;
+        this.index = options.index;
         this.id =
             Math.round(Math.random() * 1000).toString() +
             Date.now().toString() +
