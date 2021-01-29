@@ -75,7 +75,6 @@ class App {
             });
         });
 
-        return;
         let newAddition = new DataPod({
             feed: null,
             metric: this.currentMetric,

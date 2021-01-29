@@ -15,14 +15,24 @@ class PodCollection {
     }
 
     registerPod = (pod) => {
-        if (pod.index >= this.pods.length) {
-            this.container.appendChild(pod.container);
-        } else {
-            this.container.insertBefore(
-                pod.container,
-                this.container.children[pod.index]
-            );
+        console.log(pod.areaName + " - " + pod.index);
+        let added = false;
+        for (var i = 0; i < this.container.children.length; i++) {
+            let index = this.container.children[i].getAttribute("data-index");
+            if (parseInt(index) > pod.index) {
+                this.container.insertBefore(
+                    pod.container,
+                    this.container.children[i]
+                );
+                added = true;
+                break;
+            }
         }
+
+        if (!added) {
+            this.container.appendChild(pod.container);
+        }
+
         this.pods.push(pod);
     };
 
@@ -36,7 +46,7 @@ class PodCollection {
             this.pods.splice(index, 1);
             this.container.removeChild(pod.container);
             this.app.podHasUpdated();
-            this.app.updateStorage("remove", pod.id);
+            this.app.updateStorage(pod);
         }
     };
 }

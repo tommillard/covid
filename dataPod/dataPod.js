@@ -30,7 +30,7 @@ class DataPod {
         this.colour = options.colour;
         this.metric = options.metric;
         this.feed = options.feed;
-        this.index = options.index;
+        this.index = options.index || 0;
         this.id =
             Math.round(Math.random() * 1000).toString() +
             Date.now().toString() +
@@ -41,6 +41,7 @@ class DataPod {
         this.container = document.createElement("div");
         this.container.classList.add("dataPod");
         this.container.style.color = this.colour || "transparent";
+        this.container.setAttribute("data-index", this.index.toString());
 
         this.buildStructure();
 
@@ -69,7 +70,7 @@ class DataPod {
     }
 
     buildPlaceholderContent = () => {
-        let add = createElement({
+        createElement({
             elementType: "div",
             appendTo: this.container,
             innerHTML: `Add New Region`,
