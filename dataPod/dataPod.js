@@ -1,5 +1,4 @@
 class DataPod {
-    request;
     areaType;
     areaName;
     id;
@@ -18,12 +17,15 @@ class DataPod {
     population;
 
     constructor(options) {
-        var styles = document.createElement("link");
-        styles.setAttribute("href", "./dataPod/dataPod.css");
-        styles.setAttribute("rel", "stylesheet");
-        styles.setAttribute("type", "text/css");
-
-        document.head.appendChild(styles);
+        if (
+            !document.head.querySelector(`link[href="./dataPod/dataPod.css"]`)
+        ) {
+            var styles = document.createElement("link");
+            styles.setAttribute("href", "./dataPod/dataPod.css");
+            styles.setAttribute("rel", "stylesheet");
+            styles.setAttribute("type", "text/css");
+            document.head.appendChild(styles);
+        }
 
         this.colour = options.colour;
         this.metric = options.metric;
@@ -38,13 +40,22 @@ class DataPod {
 
         this.container = document.createElement("div");
         this.container.classList.add("dataPod");
-        this.container.style.color = this.colour;
+        this.container.style.color = this.colour || "transparent";
+
+        this.buildStructure();
+
+        if (!this.feed) {
+            //this.buildPlaceholderContent();
+            this.container.setAttribute("data-placeholder", "");
+            this.dom.title.textContent = "Add New Region";
+            this.podCollection.registerPod(this);
+            return;
+        }
 
         this.formRequestAndFetch()
             .then((data) => {
                 this.extractMetrics(data);
                 this.podCollection.registerPod(this);
-                this.buildScaffold();
                 this.update(data);
                 if (options.onComplete) {
                     options.onComplete(this);
@@ -57,7 +68,18 @@ class DataPod {
             });
     }
 
-    buildScaffold = () => {
+    buildPlaceholderContent = () => {
+        let add = createElement({
+            elementType: "div",
+            appendTo: this.container,
+            innerHTML: `Add New Region`,
+            class: "dataPod_Add",
+        });
+
+        this.container.setAttribute("data-placeholder", "");
+    };
+
+    buildStructure = () => {
         this.dom.title = document.createElement("h2");
         this.dom.title.classList.add("dataPod_Title");
         this.container.appendChild(this.dom.title);

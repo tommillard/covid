@@ -1,20 +1,8 @@
-/* Todo
-
-Add Region
-Remove Region
-Update Local Storage
-Date Formatting
-Update URL
-Load Complete
-Key Switch
-
-
-*/
-
 class App {
     delay = 500;
 
     feedList;
+
     container;
 
     header;
@@ -31,6 +19,7 @@ class App {
             active: true,
         },
     ];
+
     currentMetric;
 
     constructor() {
@@ -62,6 +51,10 @@ class App {
             return metric.active;
         });
 
+        const backupTimer = setTimeout(() => {
+            this.container.style.opacity = 1;
+        }, 2000);
+
         new DataPod({
             feed: "England|nation",
             metric: this.currentMetric,
@@ -80,6 +73,15 @@ class App {
                 index: idx,
                 colour: feed.colour,
             });
+        });
+
+        return;
+        let newAddition = new DataPod({
+            feed: null,
+            metric: this.currentMetric,
+            podCollection: this.areaPods,
+            index: this.feedList.length,
+            colour: null,
         });
     }
 
@@ -168,13 +170,15 @@ class App {
             this.header.setLastUpdated(pod.lastUpdated);
             this.loadedPods.push(pod.id);
         }
-
+        localS;
         if (this.loadedPods.length === this.feedList.length + 1) {
             this.container.style.opacity = 1;
         }
     };
 
     updateStorage = () => {
+        // need this to be a bit more targetted, so it doesn't nuke regions when there's a loading problem.
+        // we should use ids to remove/add regions more specifically.
         this.feedList = this.areaPods.pods.map((pod) => {
             return {
                 areaName: pod.areaName,

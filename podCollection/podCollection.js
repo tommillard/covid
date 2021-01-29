@@ -36,7 +36,7 @@ class PodCollection {
             this.pods.splice(index, 1);
             this.container.removeChild(pod.container);
             this.app.podHasUpdated();
-            this.app.updateStorage();
+            this.app.updateStorage("remove", pod.id);
         }
     };
 }
