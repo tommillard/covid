@@ -12,6 +12,7 @@
         <script src="./utils/presets.js"></script>
         <script src="./utils/createElement.js"></script>
         <script src="./utils/formatDate.js"></script>
+        <script src="./utils/constructURL.js"></script>
         <script src="./header/header.js"></script>
         <script src="./addPanel/addPanel.js"></script>
         <script src="./masterChart/masterChart.js"></script>
@@ -24,6 +25,11 @@
             "use strict";
 
             const app = new App();
+
+            var isStrict = (function () {
+                return !this;
+            })();
+
             document.body.appendChild(app.container);
         </script>
     </body>

@@ -1,14 +1,14 @@
 .dataPod {
     display: inline-block;
     margin-bottom: 40px;
-    max-width: 450px;
-    min-width: 300px;
     position: relative;
 }
-[zdata-placeholder].dataPod {
+[data-placeholder].dataPod {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px dashed #33485b;
 }
 
 .dataPod:before {
@@ -26,6 +26,13 @@
     content: none;
 }
 
+[data-placeholder].dataPod:after {
+    background-image: url("./plus-circle.svg");
+    background-repeat: no-repeat;
+    background-size: 30px;
+    content: "";
+}
+
 .dataPod:empty {
     display: none;
 }
@@ -37,15 +44,16 @@
     padding: 0;
     margin: 0;
     color: #fff;
-    width: 100%;
     margin-bottom: 10px;
-    width: 100%;
+    flex: 1 0 100%;
     border-bottom: 1px solid #33485b;
 }
 
-.dataPod_Add {
-    font-size: 18px;
-    color: white;
+[data-placeholder] .dataPod_Title {
+    border-bottom: 0;
+    text-align: center;
+    margin-bottom: 0;
+    color: var(--blue-bright);
 }
 
 .dataPod_Remove:hover {

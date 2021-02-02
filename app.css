@@ -8,6 +8,12 @@ body {
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
 }
+body {
+    --blue-bright: #6195c2;
+    --blue-mid: #6689a9;
+    --blue-dim: #33485b;
+    --blue-bg: #121f2b;
+}
 * {
     box-sizing: border-box;
     user-select: none;

@@ -1,6 +1,7 @@
 class Header {
     addButton;
     lastUpdated;
+    title;
     app;
 
     constructor(app) {
@@ -15,18 +16,34 @@ class Header {
         this.container = document.createElement("header");
         this.container.classList.add("header");
 
-        this.addButton = document.createElement("button");
-        this.addButton.classList.add("header_AddRegion");
-        this.addButton.textContent = "Add Region";
-        this.addButton.addEventListener("pointerup", () => {
-            this.app.showAddPanel();
-        });
-        this.container.appendChild(this.addButton);
-
         this.lastUpdated = document.createElement("p");
         this.lastUpdated.classList.add("header_LastUpdated");
         this.container.appendChild(this.lastUpdated);
+
+        this.title = createElement({
+            elementType: "h1",
+            class: "header_Title",
+            appendTo: this.container,
+        });
+
+        this.title.addEventListener("pointerup", () => {
+            this.app.cycleMetric();
+        });
+
+        this.update();
+
+        //this.addButton = document.createElement("button");
+        //this.addButton.classList.add("header_AddRegion");
+        //this.addButton.textContent = "Add Region";
+        //this.addButton.addEventListener("pointerup", () => {
+        //this.app.showAddPanel();
+        //});
+        //this.container.appendChild(this.addButton);
     }
+
+    update = () => {
+        this.title.innerHTML = `<b class="header_Link">${this.app.currentMetric.label}</b> in 7 day period per 100k people`;
+    };
 
     setLastUpdated = (date) => {
         this.lastUpdated.textContent =

@@ -1,3 +1,5 @@
+"use strict";
+
 class App {
     delay = 500;
 
@@ -14,9 +16,18 @@ class App {
 
     availableMetrics = [
         {
-            label: "Cases/100k",
+            label: "Cases",
+            mainTitle: "Cases in 7 day period per 100k people",
             key: "newCasesBySpecimenDateRollingRate",
+            requestedKey: "newCasesBySpecimenDateRollingRate",
             active: true,
+        },
+        {
+            label: "Deaths",
+            mainTitle: "Deaths in 7 day period per 100k people",
+            key: "newDeaths28DaysByDeathDataRollingRate",
+            requestedKey: "newDeaths28DaysByDeathDate",
+            active: false,
         },
     ];
 
@@ -25,6 +36,10 @@ class App {
     constructor() {
         this.container = document.createElement("main");
         this.container.style.opacity = 0;
+
+        this.currentMetric = this.availableMetrics.find((metric) => {
+            return metric.active;
+        });
 
         this.header = new Header(this);
         this.container.appendChild(this.header.container);
@@ -47,42 +62,60 @@ class App {
 
         this.feedList = this.loadFeedList();
 
-        this.currentMetric = this.availableMetrics.find((metric) => {
-            return metric.active;
-        });
-
         const backupTimer = setTimeout(() => {
             this.container.style.opacity = 1;
         }, 2000);
 
         new DataPod({
-            feed: "England|nation",
+            areaName: "England",
+            areaType: "nation",
             metric: this.currentMetric,
             podCollection: this.nationalPods,
             idx: 0,
             colour: "#FFECDB",
+            availableMetrics: this.availableMetrics,
         });
 
         this.convertOldStyleFeedList();
 
         this.feedList.forEach((feed, idx) => {
             new DataPod({
-                feed: `${feed.areaName}|${feed.areaType}`,
+                areaName: feed.areaName,
+                areaType: feed.areaType,
                 metric: this.currentMetric,
                 podCollection: this.areaPods,
                 index: idx,
                 colour: feed.colour,
+                availableMetrics: this.availableMetrics,
             });
         });
 
-        let newAddition = new DataPod({
-            feed: null,
+        new DataPod({
+            areaName: null,
+            areaType: null,
             metric: this.currentMetric,
             podCollection: this.areaPods,
             index: this.feedList.length,
-            colour: null,
+            colour: this.chooseNewColour(),
+            availableMetrics: this.availableMetrics,
         });
     }
+
+    cycleMetric = () => {
+        let metricIndex = this.availableMetrics.findIndex((metric) => {
+            return metric.active;
+        });
+        metricIndex++;
+        this.currentMetric.active = false;
+        this.currentMetric = this.availableMetrics[
+            metricIndex % this.availableMetrics.length
+        ];
+        this.currentMetric.active = true;
+        this.header.update();
+        this.areaPods.updateMetric(this.currentMetric);
+        this.nationalPods.updateMetric(this.currentMetric);
+        this.masterChart.update();
+    };
 
     convertOldStyleFeedList = () => {
         if (!this.feedList.length || this.feedList[0].colour) {
@@ -122,19 +155,29 @@ class App {
     };
 
     addRegion = (regionString) => {
-        new DataPod({
-            feed: regionString,
-            metric: this.currentMetric,
-            podCollection: this.areaPods,
-            index: this.areaPods.length,
-            colour: this.chooseNewColour(),
+        let podToUpdate = this.areaPods.pods[this.areaPods.pods.length - 1];
+
+        podToUpdate.areaName = regionString;
+
+        podToUpdate.attemptToLoadDataIntoPlaceholder({
             onComplete: (pod) => {
                 this.addPanel.hide();
                 this.addPanel.clear();
-                this.updateStorage();
+                this.addPodToStorage(pod);
+
+                new DataPod({
+                    areaName: null,
+                    areaType: null,
+                    metric: this.currentMetric,
+                    podCollection: this.areaPods,
+                    index: this.feedList.length,
+                    colour: this.chooseNewColour(),
+                    availableMetrics: this.availableMetrics,
+                });
+
+                this.masterChart.update();
             },
             onFailure: (pod) => {
-                this.areaPods.removePod(pod);
                 this.addPanel.showError();
             },
         });
@@ -164,28 +207,47 @@ class App {
     };
 
     podHasUpdated = (pod) => {
-        this.masterChart.update();
+        //this.masterChart.update();
+    };
+
+    podHasLoadedData = (pod) => {
         if (pod && this.loadedPods.indexOf(pod.id) < 0) {
             this.header.setLastUpdated(pod.lastUpdated);
             this.loadedPods.push(pod.id);
         }
-        localS;
         if (this.loadedPods.length === this.feedList.length + 1) {
             this.container.style.opacity = 1;
+            setTimeout(() => {
+                this.masterChart.update();
+            }, 1000);
         }
     };
 
-    updateStorage = () => {
-        // need this to be a bit more targetted, so it doesn't nuke regions when there's a loading problem.
-        // we should use ids to remove/add regions more specifically.
-        this.feedList = this.areaPods.pods.map((pod) => {
-            return {
-                areaName: pod.areaName,
-                areaType: pod.areaType,
-                colour: pod.colour,
-            };
-        });
+    addPodToStorage = (pod) => {
+        let thisPodIndex = this.areaPods.pods.indexOf(pod);
 
+        if (thisPodIndex < 0) {
+            return;
+        }
+
+        this.feedList.splice(thisPodIndex, 0, {
+            areaName: pod.areaName,
+            areaType: pod.areaType,
+            colour: pod.colour,
+        });
+        localStorage.setItem("covidFeeds", JSON.stringify(this.feedList));
+    };
+
+    removePodFromStorage = (pod) => {
+        let thisPodIndex = this.feedList.findIndex((feed) => {
+            return (
+                feed.areaType === pod.areaType && feed.areaName === pod.areaName
+            );
+        });
+        if (thisPodIndex < 0) {
+            return;
+        }
+        this.feedList.splice(thisPodIndex, 1);
         localStorage.setItem("covidFeeds", JSON.stringify(this.feedList));
     };
 }

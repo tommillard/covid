@@ -71,7 +71,9 @@ class AddPanel {
 
     show = () => {
         document.documentElement.classList.add("addPanel_Active");
-        this.input.focus();
+        setTimeout(() => {
+            this.input.focus();
+        }, 200);
     };
 
     hide = () => {

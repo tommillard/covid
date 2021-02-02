@@ -1,20 +1,24 @@
+"use strict";
+
 class DataPod {
     areaType;
     areaName;
     id;
-    feed;
     url;
     colour;
     data;
+    rawData;
     metric;
     index;
     container;
     podCollection;
     dom = {};
+    loaded = false;
 
     // data points
     lastUpdated;
     population;
+    availableMetrics;
 
     constructor(options) {
         if (
@@ -29,7 +33,8 @@ class DataPod {
 
         this.colour = options.colour;
         this.metric = options.metric;
-        this.feed = options.feed;
+        this.areaName = options.areaName;
+        this.availableMetrics = options.availableMetrics;
         this.index = options.index || 0;
         this.id =
             Math.round(Math.random() * 1000).toString() +
@@ -37,27 +42,45 @@ class DataPod {
             Math.round(Math.random() * 1000).toString();
 
         this.podCollection = options.podCollection;
+        this.podCollection.startAdditionProcess = this.podCollection.startAdditionProcess.bind(
+            this
+        );
 
         this.container = document.createElement("div");
         this.container.classList.add("dataPod");
         this.container.style.color = this.colour || "transparent";
-        this.container.setAttribute("data-index", this.index.toString());
+        this.podCollection.registerPod(this);
 
         this.buildStructure();
 
-        if (!this.feed) {
-            //this.buildPlaceholderContent();
-            this.container.setAttribute("data-placeholder", "");
-            this.dom.title.textContent = "Add New Region";
-            this.podCollection.registerPod(this);
+        if (!this.areaName) {
+            this.placeholderMode();
             return;
         }
 
+        this.areaType = options.areaType || this.guessAreaType(this.areaName);
+
         this.formRequestAndFetch()
             .then((data) => {
-                this.extractMetrics(data);
-                this.podCollection.registerPod(this);
-                this.update(data);
+                this.successMode(data);
+                if (options.onComplete) {
+                    options.onComplete(this);
+                }
+            })
+            .catch(() => {
+                this.errorMode();
+                if (options.onFailure) {
+                    options.onFailure(this);
+                }
+            });
+    }
+
+    attemptToLoadDataIntoPlaceholder = (options) => {
+        this.areaType = this.areaType || this.guessAreaType(this.areaName);
+
+        this.formRequestAndFetch()
+            .then((data) => {
+                this.successMode(data);
                 if (options.onComplete) {
                     options.onComplete(this);
                 }
@@ -67,17 +90,31 @@ class DataPod {
                     options.onFailure(this);
                 }
             });
-    }
+    };
 
-    buildPlaceholderContent = () => {
-        createElement({
-            elementType: "div",
-            appendTo: this.container,
-            innerHTML: `Add New Region`,
-            class: "dataPod_Add",
-        });
+    errorMode = () => {
+        this.container.setAttribute("data-error", "");
+    };
 
+    successMode = (data) => {
+        this.container.removeAttribute("data-error");
+        this.container.removeAttribute("data-placeholder");
+        this.extractMetrics(data);
+        this.podCollection.podHasLoadedData(this);
+        this.update(data);
+        this.container.removeEventListener(
+            "pointerup",
+            this.podCollection.startAdditionProcess
+        );
+    };
+
+    placeholderMode = () => {
+        this.dom.title.textContent = "Add New Region";
         this.container.setAttribute("data-placeholder", "");
+        this.container.addEventListener(
+            "pointerup",
+            this.podCollection.startAdditionProcess
+        );
     };
 
     buildStructure = () => {
@@ -88,6 +125,7 @@ class DataPod {
         this.dom.remove = document.createElement("a");
         this.dom.remove.classList.add("dataPod_Remove");
         this.dom.remove.textContent = "[X]";
+
         this.dom.remove.addEventListener("pointerup", (e) => {
             this.podCollection.removePod(this);
         });
@@ -105,14 +143,11 @@ class DataPod {
 
     formRequestAndFetch = () => {
         return new Promise((resolve, reject) => {
-            this.areaName = this.feed.split("|")[0];
-
-            this.areaType = this.getAreaType(
+            this.url = constructURL(
                 this.areaName,
-                this.feed.split("|")[1]
+                this.areaType,
+                this.availableMetrics
             );
-
-            this.url = this.constructURL(this.areaName, this.areaType);
 
             this.fetchData().then((data) => {
                 if (data) {
@@ -126,7 +161,42 @@ class DataPod {
 
     extractMetrics = (data) => {
         this.lastUpdated = data[0].date;
-        this.population = 12344;
+
+        const rollingRateEntry = data.find((entry) => {
+            return entry.newCasesBySpecimenDateRollingRate;
+        });
+
+        this.population =
+            (rollingRateEntry.newCasesBySpecimenDateRollingSum /
+                rollingRateEntry.newCasesBySpecimenDateRollingRate) *
+            100000;
+
+        data.forEach((entry, idx) => {
+            if (entry.newCasesBySpecimenDateRollingRate) {
+                entry.newDeaths28DaysByDeathDataRollingRate = this.calculateRollingRateFigure(
+                    data,
+                    entry,
+                    idx
+                );
+            }
+        });
+    };
+
+    calculateRollingRateFigure = (dataSet, entry, idx) => {
+        let sevenDayTotal = 0;
+
+        for (var i = 0; i < 7; i++) {
+            if (
+                dataSet[idx + i] &&
+                dataSet[idx + i].newDeaths28DaysByDeathDate
+            ) {
+                sevenDayTotal += dataSet[idx + i].newDeaths28DaysByDeathDate;
+            }
+        }
+
+        return parseFloat(
+            (sevenDayTotal / (this.population / 100000)).toFixed(1)
+        );
     };
 
     remove = () => {};
@@ -162,7 +232,11 @@ class DataPod {
                 })
                 .catch(() => {
                     this.areaType = "utla";
-                    this.url = this.constructURL(this.areaName, this.areaType);
+                    this.url = constructURL(
+                        this.areaName,
+                        this.areaType,
+                        this.availableMetrics
+                    );
                     fetch(this.url)
                         .then((response) => response.json())
                         .then((json) => {
@@ -185,17 +259,7 @@ class DataPod {
         }
     };
 
-    getAreaType = (areaName, areaType) => {
-        if (
-            areaType === "overview" ||
-            areaType === "nation" ||
-            areaType === "region" ||
-            areaType === "utla" ||
-            areaType == "ltla"
-        ) {
-            return areaType;
-        }
-
+    guessAreaType = (areaName) => {
         if (areaName.toLowerCase() == "united kingdom") {
             return "overview";
         } else if (Presets.nations.indexOf(areaName.toLowerCase()) >= 0) {
@@ -207,37 +271,23 @@ class DataPod {
         }
     };
 
-    constructURL = (areaName, areaType) => {
-        return (
-            "https://coronavirus.data.gov.uk/api/v1/data?filters=" +
-            "areaType=" +
-            areaType +
-            ";" +
-            "areaName=" +
-            encodeURI(areaName) +
-            "&structure=%7B" +
-            "%22areaType%22:%22areaType%22," +
-            "%22areaName%22:%22areaName%22," +
-            "%22date%22:%22date%22," +
-            "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22," +
-            "%22newCasesByPublishDate%22:%22newCasesByPublishDate%22," +
-            "%22newCasesBySpecimenDateRollingSum%22:%22newCasesBySpecimenDateRollingSum%22," +
-            "%22newCasesBySpecimenDateRollingRate%22:%22newCasesBySpecimenDateRollingRate%22" +
-            "%7D" +
-            "&format=json"
-        );
-    };
-
     update = (newData) => {
         if (newData) {
             this.data = JSON.parse(JSON.stringify(newData)).filter((entry) => {
-                return entry[this.metric.key];
+                return (
+                    typeof entry[this.metric.key] !== "undefined" &&
+                    entry[this.metric.key] !== null
+                );
             });
+            this.rawData = JSON.parse(JSON.stringify(newData));
+        }
+
+        if (!this.data) {
+            return;
         }
 
         this.dom.summary.innerHTML = "";
         this.dom.dataWrapper.innerHTML = "";
-
         this.dom.title.innerHTML = this.data[0].areaName;
 
         var day1Change = this.generatePercentageChange(

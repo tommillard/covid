@@ -1,8 +1,7 @@
 .header {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
     padding: 15px;
 }
 .header_LastUpdated {
@@ -11,25 +10,21 @@
     color: #6689a9;
 }
 
-.header_AddRegion {
+.header_Title {
     margin: 0;
     height: 45px;
     appearance: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 15px;
-    border: 0;
-    background: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 21px;
     font-weight: bold;
-    border-radius: 1px;
-    border: 1px solid #33485b;
-    background: #121f2b;
     cursor: pointer;
-    font-family: inherit;
-    outline: 0;
+    flex: 1 0 100%;
+    /* border-bottom: 1px solid var(--blue-bright); */
+}
+.header_Link {
+    color: var(--blue-bright);
+    display: inline;
+    border-bottom: 2px solid var(--blue-bright);
 }
 .addRegion:focus {
     appearance: none;

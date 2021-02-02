@@ -15,29 +15,27 @@ class PodCollection {
     }
 
     registerPod = (pod) => {
-        console.log(pod.areaName + " - " + pod.index);
-        let added = false;
-        for (var i = 0; i < this.container.children.length; i++) {
-            let index = this.container.children[i].getAttribute("data-index");
-            if (parseInt(index) > pod.index) {
-                this.container.insertBefore(
-                    pod.container,
-                    this.container.children[i]
-                );
-                added = true;
-                break;
-            }
-        }
-
-        if (!added) {
-            this.container.appendChild(pod.container);
-        }
-
+        this.container.appendChild(pod.container);
         this.pods.push(pod);
+    };
+
+    podHasLoadedData = (pod) => {
+        this.app.podHasLoadedData(pod);
     };
 
     podHasUpdated = (pod) => {
         this.app.podHasUpdated(pod);
+    };
+
+    startAdditionProcess = (pod) => {
+        this.app.showAddPanel();
+    };
+
+    updateMetric = (newMetric) => {
+        this.pods.forEach((pod) => {
+            pod.metric = newMetric;
+            pod.update();
+        });
     };
 
     removePod = (pod) => {
@@ -46,7 +44,8 @@ class PodCollection {
             this.pods.splice(index, 1);
             this.container.removeChild(pod.container);
             this.app.podHasUpdated();
-            this.app.updateStorage(pod);
+            this.app.removePodFromStorage(pod);
+            this.app.masterChart.update();
         }
     };
 }
