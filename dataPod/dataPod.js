@@ -271,6 +271,16 @@ class DataPod {
         }
     };
 
+    getLowestSinceDate = (metricKey) => {
+        let thisValue = this.data[0][metricKey];
+
+        let previouslyBetterOn = this.data.find((dataPoint) => {
+            return dataPoint[metricKey] < thisValue;
+        }).date;
+
+        return formatDate(previouslyBetterOn, "{{date}}/{{monthNum}}");
+    };
+
     update = (newData) => {
         if (newData) {
             this.data = JSON.parse(JSON.stringify(newData)).filter((entry) => {
@@ -309,6 +319,14 @@ class DataPod {
             this.metric.label
         );
         this.dom.summary.appendChild(rate);
+
+        let lowestSinceDate = this.getLowestSinceDate(this.metric.key);
+
+        var lowestSince = this.createSummaryItem(
+            lowestSinceDate,
+            "lowest since"
+        );
+        this.dom.summary.appendChild(lowestSince);
 
         this.data.forEach((entry, idx) => {
             var entryWrapper = document.createElement("div");
