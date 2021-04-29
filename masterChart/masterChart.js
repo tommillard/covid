@@ -129,6 +129,8 @@ class MasterChart {
                 label: this.app.nationalPods.pods[0].data[0].areaName,
             });
         }
+        
+        console.log(JSON.parse(JSON.stringify(datasets)));
 
         this.chart.data.datasets = datasets.map((dataset) => {
             return {
