@@ -140,7 +140,7 @@ class MasterChart {
             };
         });
         
-        this.chart.labels = ds[0].data.map((entry)=>{
+        this.chart.data.labels = ds[0].data.map((entry)=>{
             return entry.date;
         });
         
