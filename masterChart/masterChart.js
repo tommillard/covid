@@ -23,6 +23,11 @@ class MasterChart {
         this.context = document.createElement("canvas");
         this.context.classList.add("masterChart_Canvas");
         this.container.appendChild(this.context);
+        
+        this.container.addEventListener("pointerup", ()=>{
+            this.range = this.range === 120 ? 60 : 120;
+            this.update();
+        });
 
         this.chart = new Chart(this.context, {
             type: "line",
