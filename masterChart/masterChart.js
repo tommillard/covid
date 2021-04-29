@@ -130,9 +130,9 @@ class MasterChart {
             });
         }
         
-        console.log(JSON.parse(JSON.stringify(datasets)));
+        var ds= JSON.parse(JSON.stringify(datasets));
 
-        this.chart.data.datasets = datasets.map((dataset) => {
+        this.chart.data.datasets = ds.map((dataset) => {
             return {
                 data: dataset.data.reverse(),
                 borderColor: dataset.borderColor,
