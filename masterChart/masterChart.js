@@ -137,6 +137,8 @@ class MasterChart {
                 label: dataset.label,
             };
         });
+        
+        console.log(this.chart);
 
         this.chart.update();
     };
