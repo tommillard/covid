@@ -144,6 +144,8 @@ class MasterChart {
             return entry.date;
         });
         
+        console.log(ds);
+        
         console.log(this.chart);
 
         this.chart.update();
