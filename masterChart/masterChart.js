@@ -140,6 +140,10 @@ class MasterChart {
             };
         });
         
+        this.chart.labels = ds[0].data.map((entry)=>{
+            return entry.date;
+        });
+        
         console.log(this.chart);
 
         this.chart.update();
