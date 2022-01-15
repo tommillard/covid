@@ -159,22 +159,24 @@ class DataPod {
 
     extractMetrics = (data) => {
         this.lastUpdated = data[0].date;
+        //debugger;
+        const rollingRateEntry = data.find((entry) => {
+            return entry.newCasesBySpecimenDateRollingRate;
+        });
 
-        // const rollingRateEntry = data.find((entry) => {
-        //     return entry.newCasesBySpecimenDateRollingRate;
-        // });
+        if (rollingRateEntry) {
+            this.population =
+                (rollingRateEntry.newCasesBySpecimenDateRollingSum /
+                    rollingRateEntry.newCasesBySpecimenDateRollingRate) *
+                100000;
+        }
 
-        // this.population =
-        //     (rollingRateEntry.newCasesBySpecimenDateRollingSum /
-        //         rollingRateEntry.newCasesBySpecimenDateRollingRate) *
-        //     100000;
-
-        // data.forEach((entry, idx) => {
-        //     if (entry.newCasesBySpecimenDateRollingRate) {
-        //         entry.newDeaths28DaysByDeathDataRollingRate =
-        //             this.calculateRollingRateFigure(data, entry, idx);
-        //     }
-        // });
+        data.forEach((entry, idx) => {
+            if (entry.newCasesBySpecimenDateRollingRate) {
+                entry.newDeaths28DaysByDeathDataRollingRate =
+                    this.calculateRollingRateFigure(data, entry, idx);
+            }
+        });
     };
 
     calculateRollingRateFigure = (dataSet, entry, idx) => {

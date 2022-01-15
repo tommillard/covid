@@ -42,7 +42,7 @@ class Header {
     }
 
     update = () => {
-        this.title.innerHTML = `Daily <b class="header_Link">${this.app.currentMetric.label}</b>`;
+        this.title.innerHTML = `<b class="header_Link">${this.app.currentMetric.label}</b>`;
     };
 
     setLastUpdated = (date) => {

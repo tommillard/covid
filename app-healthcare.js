@@ -16,19 +16,19 @@ class App {
 
     availableMetrics = [
         {
-            label: "Admissions",
-            mainTitle: "Patients admitted to hospital",
+            label: "Daily Admissions",
+            mainTitle: "Patients admitted to hospital with COVID",
             key: "newAdmissions",
             requestedKey: "newAdmissions",
             active: true,
         },
-        // {
-        //     label: "Deaths",
-        //     mainTitle: "Deaths in 7 day period per 100k people",
-        //     key: "newDeaths28DaysByDeathDataRollingRate",
-        //     requestedKey: "newDeaths28DaysByDeathDate",
-        //     active: false,
-        // },
+        {
+            label: "Patients in Hospital",
+            mainTitle: "Patients in hospital with COVID",
+            key: "hospitalCases",
+            requestedKey: "hospitalCases",
+            active: false,
+        },
     ];
 
     currentMetric;
