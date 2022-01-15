@@ -23,6 +23,11 @@ class MasterChart {
         this.context = document.createElement("canvas");
         this.context.classList.add("masterChart_Canvas");
         this.container.appendChild(this.context);
+        
+        this.container.addEventListener("pointerup", ()=>{
+            this.range = this.range === 120 ? 60 : 120;
+            this.update();
+        });
 
         this.chart = new Chart(this.context, {
             type: "line",
@@ -124,14 +129,24 @@ class MasterChart {
                 label: this.app.nationalPods.pods[0].data[0].areaName,
             });
         }
+        
+        var ds= JSON.parse(JSON.stringify(datasets));
 
-        this.chart.data.datasets = datasets.map((dataset) => {
+        this.chart.data.datasets = ds.map((dataset) => {
             return {
                 data: dataset.data.reverse(),
                 borderColor: dataset.borderColor,
                 label: dataset.label,
             };
         });
+        
+        this.chart.data.labels = ds[0].data.map((entry)=>{
+            return entry.date;
+        });
+        
+        console.log(ds);
+        
+        console.log(this.chart);
 
         this.chart.update();
     };
