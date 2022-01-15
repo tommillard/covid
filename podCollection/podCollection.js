@@ -20,6 +20,7 @@ class PodCollection {
     };
 
     podHasLoadedData = (pod) => {
+        console.log("popp");
         this.app.podHasLoadedData(pod);
     };
 

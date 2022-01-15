@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>COVID Tracker</title>
+        <meta
+            name="viewport"
+            id="viewport"
+            content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
+        />
+        <link href="./app.css" rel="stylesheet" type="text/css" />
+        <script src="./utils/chart.min.js"></script>
+        <script src="./utils/presets.js"></script>
+        <script src="./utils/createElement.js"></script>
+        <script src="./utils/formatDate.js"></script>
+        <script src="./utils/constructURL.js"></script>
+        <script src="./header/header.js"></script>
+        <script src="./addPanel/addPanel.js"></script>
+        <script src="./masterChart/masterChart.js"></script>
+        <script src="./podCollection/podCollection.js"></script>
+        <script src="./dataPod/dataPod.js"></script>
+    </head>
+    <body>
+        <script src="./app-healthcare.js"></script>
+        <script type="text/javascript">
+            "use strict";
+
+            const app = new App();
+
+            var isStrict = (function () {
+                return !this;
+            })();
+
+            document.body.appendChild(app.container);
+        </script>
+    </body>
+</html>

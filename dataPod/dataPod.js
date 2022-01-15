@@ -42,9 +42,8 @@ class DataPod {
             Math.round(Math.random() * 1000).toString();
 
         this.podCollection = options.podCollection;
-        this.podCollection.startAdditionProcess = this.podCollection.startAdditionProcess.bind(
-            this
-        );
+        this.podCollection.startAdditionProcess =
+            this.podCollection.startAdditionProcess.bind(this);
 
         this.container = document.createElement("div");
         this.container.classList.add("dataPod");
@@ -148,7 +147,6 @@ class DataPod {
                 this.areaType,
                 this.availableMetrics
             );
-
             this.fetchData().then((data) => {
                 if (data) {
                     resolve(data);
@@ -162,24 +160,21 @@ class DataPod {
     extractMetrics = (data) => {
         this.lastUpdated = data[0].date;
 
-        const rollingRateEntry = data.find((entry) => {
-            return entry.newCasesBySpecimenDateRollingRate;
-        });
+        // const rollingRateEntry = data.find((entry) => {
+        //     return entry.newCasesBySpecimenDateRollingRate;
+        // });
 
-        this.population =
-            (rollingRateEntry.newCasesBySpecimenDateRollingSum /
-                rollingRateEntry.newCasesBySpecimenDateRollingRate) *
-            100000;
+        // this.population =
+        //     (rollingRateEntry.newCasesBySpecimenDateRollingSum /
+        //         rollingRateEntry.newCasesBySpecimenDateRollingRate) *
+        //     100000;
 
-        data.forEach((entry, idx) => {
-            if (entry.newCasesBySpecimenDateRollingRate) {
-                entry.newDeaths28DaysByDeathDataRollingRate = this.calculateRollingRateFigure(
-                    data,
-                    entry,
-                    idx
-                );
-            }
-        });
+        // data.forEach((entry, idx) => {
+        //     if (entry.newCasesBySpecimenDateRollingRate) {
+        //         entry.newDeaths28DaysByDeathDataRollingRate =
+        //             this.calculateRollingRateFigure(data, entry, idx);
+        //     }
+        // });
     };
 
     calculateRollingRateFigure = (dataSet, entry, idx) => {
