@@ -29,6 +29,13 @@ class App {
             requestedKey: "hospitalCases",
             active: false,
         },
+        {
+            label: "MV Beds Occupied",
+            mainTitle: "Patients in hospital with COVID in MV Beds",
+            key: "covidOccupiedMVBeds",
+            requestedKey: "covidOccupiedMVBeds",
+            active: false,
+        },
     ];
 
     currentMetric;
